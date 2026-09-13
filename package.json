@@ -1,0 +1,15 @@
+{
+  "name": "knowledge-machine-client",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@8.7.1",
+  "scripts": {
+    "dev": "pnpm --filter blog dev",
+    "build": "pnpm -r build",
+    "preview": "pnpm --filter blog preview"
+  }
+}
