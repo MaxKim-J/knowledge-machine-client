@@ -1,0 +1,17 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import { getPosts } from '../../../lib/posts';
+
+const lang = 'en' as const;
+const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), getPosts(lang, 'knowledge')]);
+---
+
+<Base
+  lang={lang}
+  title="knowledge · knowledge machine"
+  description="Short notes built around facts and context."
+  altPath="/knowledges"
+>
+  <PostList lang={lang} kind="knowledge" posts={knowledges} counts={{ article: articles.length, knowledge: knowledges.length }} />
+</Base>

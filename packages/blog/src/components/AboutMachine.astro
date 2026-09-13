@@ -1,0 +1,152 @@
+---
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const COPY = {
+  ko: {
+    title: '지식기계',
+    lead: [
+      '지식기계는 읽고 본 것을 잃어버리지 않기 위한 파이프라인입니다. 원재료에서 발행까지 네 단계를 지나며, 각 단계는 고정된 스키마를 가집니다. 옵시디언 저장소(knowledge-machine-database)가 원본이고, 이 블로그는 그 저장소를 동기화해 정적 페이지로 빌드합니다.',
+    ],
+    stages: [
+      {
+        name: 'resource',
+        desc: '유튜브 영상, 책, 아티클처럼 접근 가능한 비정형 원재료.',
+        note: '저장하지 않고 주소와 접근 경로만 남긴다',
+      },
+      {
+        name: 'reference',
+        desc: '원재료 하나와 1:1로 대응하는 정형 기록. 스키마를 가진다.',
+        note: '블로그에 발행되지 않음 · 짧은 평과 함께 SNS로 공유',
+      },
+      {
+        name: 'knowledge',
+        desc: '사실과 약한 의견으로 구성한 짧은 정형 문헌. 미주로 출처를 링크한다.',
+        note: '발행 대상 · tech / human / culture / business / investment',
+      },
+      {
+        name: 'article',
+        desc: '주제가 복잡하고 필자의 의견이 강하게 드러나는 글.',
+        note: '발행 대상 · tech / human / culture / business / investment',
+      },
+    ],
+    sections: [
+      {
+        heading: '발행되는 것',
+        body: '블로그에는 knowledge와 article만 올라옵니다. 둘 다 같은 대분류(tech · human · culture · business · investment)를 따르고, 차이는 글의 성격에 있습니다. knowledge는 사실 위주, article은 의견 위주입니다. reference는 발행되지 않고 짧은 평과 함께 SNS로만 공유됩니다.',
+      },
+      {
+        heading: '동기화',
+        body: '빌드할 때마다 저장소의 최신 커밋을 가져와 정적 페이지를 다시 만듭니다. 글을 복사해 보관하지 않으므로, 원본을 고치면 다음 빌드가 그대로 따라옵니다.',
+      },
+    ],
+  },
+  en: {
+    title: 'Knowledge Machine',
+    lead: [
+      'Knowledge Machine is a pipeline for not losing what I read and watch. Material passes through four stages on its way to publication, and each stage has a fixed schema. An Obsidian vault (knowledge-machine-database) holds the originals, and this blog syncs that vault and builds static pages from it.',
+    ],
+    stages: [
+      {
+        name: 'resource',
+        desc: 'Unstructured raw material I can reach again: videos, books, articles.',
+        note: 'never copied, only the address and the way back',
+      },
+      {
+        name: 'reference',
+        desc: 'A structured record that maps one to one onto a single source.',
+        note: 'not published here, shared on social media with a short note',
+      },
+      {
+        name: 'knowledge',
+        desc: 'A short structured piece built on facts, with sources linked in endnotes.',
+        note: 'published · tech / human / culture / business / investment',
+      },
+      {
+        name: 'article',
+        desc: 'A longer piece where the subject is complex and the opinion is mine.',
+        note: 'published · tech / human / culture / business / investment',
+      },
+    ],
+    sections: [
+      {
+        heading: 'What gets published',
+        body: 'Only knowledge and articles appear here. Both share the same top-level categories (tech · human · culture · business · investment); the difference is in character. Knowledge leans on facts, articles on opinion. References are never published, only shared on social media with a short note.',
+      },
+      {
+        heading: 'Syncing',
+        body: 'Every build pulls the latest commit from the vault and regenerates the pages. Nothing is copied and kept, so editing the original is enough — the next build follows.',
+      },
+    ],
+  },
+} as const;
+
+const copy = COPY[lang];
+---
+
+<main class="band">
+  <h1 class="atitle">{copy.title}</h1>
+  {copy.lead.map((line) => <p class="alead">{line}</p>)}
+
+  <div style="display:flex;flex-direction:column;margin:34px 0 40px">
+    {
+      copy.stages.map((stage) => (
+        <div class="deflist" style="padding:0 0 22px">
+          <span style="font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500">{stage.name}</span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:16px;line-height:1.7;color:#111111">{stage.desc}</span>
+            <span style="font-size:12.5px;color:var(--dim)">{stage.note}</span>
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    copy.sections.map((section, index) => (
+      <>
+        <h2 class="asub" style={index === 0 ? 'margin:0 0 12px' : 'margin:38px 0 12px'}>
+          {section.heading}
+        </h2>
+        <p class="alead">{section.body}</p>
+      </>
+    ))
+  }
+</main>
+
+<style>
+  .atitle {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+  .asub {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.45;
+    letter-spacing: -0.02em;
+  }
+  .alead {
+    margin: 0 0 20px;
+    color: var(--body);
+  }
+  .deflist {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    column-gap: 20px;
+  }
+  @media (max-width: 600px) {
+    .deflist {
+      grid-template-columns: 1fr;
+      row-gap: 4px;
+    }
+  }
+</style>

@@ -1,0 +1,10 @@
+---
+import Base from '../../../layouts/Base.astro';
+import AboutAuthor from '../../../components/AboutAuthor.astro';
+
+const lang = 'en' as const;
+---
+
+<Base lang={lang} title="Max Kim · knowledge machine" description="About Max Kim, frontend engineer." altPath="/author" active="author">
+  <AboutAuthor lang={lang} />
+</Base>

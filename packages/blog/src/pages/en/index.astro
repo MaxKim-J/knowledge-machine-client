@@ -1,17 +1,17 @@
 ---
-import Base from '../layouts/Base.astro';
-import PostList from '../components/PostList.astro';
-import { getPosts } from '../lib/posts';
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/posts';
 
-const lang = 'ko' as const;
+const lang = 'en' as const;
 const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), getPosts(lang, 'knowledge')]);
 ---
 
 <Base
   lang={lang}
   title="knowledge machine"
-  description="읽고 본 것을 잃어버리지 않기 위한 파이프라인. 김맥스의 글 모음."
-  altPath="/en"
+  description="A pipeline for not losing what I read and watch. Writing by Max Kim."
+  altPath="/"
 >
   <PostList lang={lang} kind="article" posts={articles} counts={{ article: articles.length, knowledge: knowledges.length }} />
 </Base>

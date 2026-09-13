@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import AboutAuthor from '../../components/AboutAuthor.astro';
+
+const lang = 'ko' as const;
+---
+
+<Base lang={lang} title="김맥스 · knowledge machine" description="프론트엔드 엔지니어 김맥스 소개." altPath="/en/author" active="author">
+  <AboutAuthor lang={lang} />
+</Base>

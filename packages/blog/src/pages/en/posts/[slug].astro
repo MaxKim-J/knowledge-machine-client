@@ -1,0 +1,37 @@
+---
+import { getPosts, postHref } from '../../../lib/posts';
+import { OLD_PATH_ALIASES } from '../../../lib/legacy';
+
+// 구 블로그는 글을 /posts/{slug} 로 제공했다. 유입 링크와 RSS 구독자가 아직 그
+// 주소를 사용하므로 같은 경로에 리다이렉트 페이지를 남긴다.
+export async function getStaticPaths() {
+  const posts = await getPosts('en');
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { to: postHref(post.kind, post.slug, 'en') },
+  }));
+
+  for (const [oldSlug, newSlug] of Object.entries(OLD_PATH_ALIASES)) {
+    const target = posts.find((post) => post.slug === newSlug);
+    if (target) paths.push({ params: { slug: oldSlug }, props: { to: target.href } });
+  }
+  return paths;
+}
+
+const { to } = Astro.props;
+const target = new URL(to, Astro.site);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting</title>
+  </head>
+  <body>
+    <a href={to}>{target.toString()}</a>
+    <script is:inline define:vars={{ to }}>location.replace(to);</script>
+  </body>
+</html>

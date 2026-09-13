@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostView from '../../components/PostView.astro';
+import { getPosts, relatedPosts } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const lang = 'ko' as const;
+  const [posts, all] = await Promise.all([getPosts(lang, 'knowledge'), getPosts(lang)]);
+  return posts.map((post, index) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: posts[index - 1],
+      next: posts[index + 1],
+      related: relatedPosts(post, all),
+    },
+  }));
+}
+
+const lang = 'ko' as const;
+const { post, prev, next, related } = Astro.props;
+---
+
+<Base
+  lang={lang}
+  title={`${post.title} · knowledge machine`}
+  description={post.summary}
+  altPath={`/en/knowledges/${post.slug}`}
+>
+  <PostView lang={lang} post={post} prev={prev} next={next} related={related} />
+</Base>

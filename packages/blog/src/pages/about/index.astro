@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import AboutMachine from '../../components/AboutMachine.astro';
+
+const lang = 'ko' as const;
+---
+
+<Base lang={lang} title="지식기계 · knowledge machine" description="지식기계 파이프라인이 무엇을 어떻게 발행하는지." altPath="/en/about" active="about">
+  <AboutMachine lang={lang} />
+</Base>

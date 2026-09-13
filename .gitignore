@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # editors
 *.swp
+
+# sync-database 가 database 서브모듈에서 생성한다
+packages/blog/public/images/

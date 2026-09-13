@@ -1,0 +1,164 @@
+---
+import { render } from 'astro:content';
+import { T, withLang, type Lang } from '../lib/i18n';
+import type { Post } from '../lib/posts';
+import Prose from './Prose.astro';
+
+interface Props {
+  lang: Lang;
+  post: Post;
+  prev?: Post;
+  next?: Post;
+  related: Post[];
+}
+
+const { lang, post, prev, next, related } = Astro.props;
+const t = T[lang];
+const { Content } = await render(post.entry);
+const listHref = withLang(post.kind === 'article' ? '/' : '/knowledges', lang);
+const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
+---
+
+<main class="band">
+  <article>
+    <p style="font-size:12px;letter-spacing:0.04em;color:var(--dim);font-weight:500;margin:0 0 8px">
+      {post.kind} &gt; {post.category}
+    </p>
+    <h1 class="ptitle">{post.title}</h1>
+    <p style="font-weight:350;font-size:15.5px;line-height:1.7;color:var(--muted);margin:0 0 14px">{post.summary}</p>
+    <div
+      style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-size:12.5px;color:var(--dim);margin:0 0 40px"
+    >
+      <span style="font-variant-numeric:tabular-nums">{post.meta}</span>
+      {
+        post.tags.map((tag) => (
+          <a href={tagHref(tag)} class="tag" style="color:var(--muted);text-decoration:none">
+            #{tag}
+          </a>
+        ))
+      }
+    </div>
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <div style="margin-top:52px;font-family:var(--sans);font-size:12.5px">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:0 0 12px">
+        <span style="color:var(--muted)">{t.writtenBy}</span>
+        <span style="display:flex;gap:14px">
+          <a class="quiet" href="mailto:hwaseen@gmail.com">{t.email}</a>
+          <a class="quiet" id="copy-link" href="#" data-copy={t.copy} data-copied={t.copied}>{t.copy}</a>
+          <a
+            class="quiet"
+            href={`https://x.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(
+              new URL(post.href, Astro.site).toString(),
+            )}`}
+            target="_blank"
+            rel="noreferrer">{t.shareX}</a
+          >
+        </span>
+      </div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:0 0 12px">
+        <a class="quiet" href={listHref} style="color:var(--muted)">{t.back}</a>
+        <span style="display:flex;gap:14px">
+          {prev ? <a class="quiet" href={prev.href}>{t.prev}</a> : <span style="color:var(--rule)">{t.prev}</span>}
+          {next ? <a class="quiet" href={next.href}>{t.next}</a> : <span style="color:var(--rule)">{t.next}</span>}
+          <a class="quiet" id="random" href={listHref}>{t.random}</a>
+        </span>
+      </div>
+
+      {
+        related.length > 0 && (
+          <section style="padding:2px 0 14px">
+            <p style="font-size:12px;letter-spacing:0.04em;color:var(--dim);font-weight:500;margin:0 0 2px">
+              {t.related}
+            </p>
+            <div style="display:flex;flex-direction:column">
+              {related.map((item) => (
+                <a
+                  class="row"
+                  href={item.href}
+                  style="display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:center;padding:5px 8px;margin:0 -8px;border-radius:4px;text-decoration:none;color:inherit"
+                >
+                  <span style="font-weight:450;font-size:15.5px;line-height:1.5;letter-spacing:-0.01em">
+                    {item.title}
+                  </span>
+                  <span style="font-size:12px;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums">
+                    {item.meta}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </div>
+  </article>
+</main>
+
+<style>
+  .ptitle {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 1.45;
+    letter-spacing: -0.025em;
+    margin: 0 0 10px;
+  }
+  .quiet {
+    color: var(--dim);
+    text-decoration: none;
+  }
+  .quiet:hover {
+    color: var(--ink);
+  }
+  .tag:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .row:hover {
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  @media (max-width: 600px) {
+    .ptitle {
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ pool: related.map((item) => item.href), listHref }}>
+  (() => {
+    const copy = document.getElementById('copy-link');
+    let timer;
+    copy?.addEventListener('click', (event) => {
+      event.preventDefault();
+      navigator.clipboard?.writeText(location.href).catch(() => {});
+      copy.textContent = copy.dataset.copied;
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        copy.textContent = copy.dataset.copy;
+      }, 1600);
+    });
+
+    // 목록 페이지의 링크에서 고른다. 스크립트가 없으면 목록으로 이동한다.
+    const random = document.getElementById('random');
+    random?.addEventListener('click', async (event) => {
+      event.preventDefault();
+      let candidates = pool;
+      try {
+        const html = await fetch(listHref).then((response) => response.text());
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const found = Array.from(doc.querySelectorAll('.row'))
+          .map((row) => row.getAttribute('href'))
+          .filter((href) => href && href !== location.pathname);
+        if (found.length) candidates = found;
+      } catch {
+        // 목록을 읽지 못하면 관련 글에서 고른다.
+      }
+      if (!candidates.length) return;
+      location.href = candidates[Math.floor(Math.random() * candidates.length)];
+    });
+  })();
+</script>

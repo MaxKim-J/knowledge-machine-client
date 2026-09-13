@@ -1,0 +1,215 @@
+---
+import { T, withLang, type Lang } from '../lib/i18n';
+import { categoriesFor, type Kind, type Post } from '../lib/posts';
+
+interface Props {
+  lang: Lang;
+  kind: Kind;
+  posts: Post[];
+  counts: Record<Kind, number>;
+}
+
+const { lang, kind, posts, counts } = Astro.props;
+const t = T[lang];
+
+const tabs: { key: Kind; label: string; href: string }[] = [
+  { key: 'article', label: 'article', href: withLang('/', lang) },
+  { key: 'knowledge', label: 'knowledge', href: withLang('/knowledges', lang) },
+];
+const categories = categoriesFor(kind);
+---
+
+<div class="band bar">
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:18px;font-size:13.5px;line-height:1.4">
+      {
+        tabs.map((tab) => (
+          <a class="swap" href={tab.href} style="display:inline-flex;align-items:baseline;gap:5px">
+            <span style="display:inline-grid">
+              <span class="ghost">{tab.label}</span>
+              <span class={tab.key === kind ? 'on' : 'off'}>{tab.label}</span>
+            </span>
+            <span style="display:inline-grid;font-size:11px;font-variant-numeric:tabular-nums">
+              <span class="ghost" style="font-weight:500">
+                {counts[tab.key]}
+              </span>
+              <span class={tab.key === kind ? 'on' : 'off'} style="font-weight:500">
+                {counts[tab.key]}
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+    <div
+      id="cats"
+      style="display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;font-size:12.5px;line-height:1.4;min-height:17.5px"
+    >
+      {
+        categories.map((cat) => (
+          <a class="swap cat" href="#" data-cat={cat}>
+            <span class="ghost">{cat}</span>
+            <span class="on">{cat}</span>
+            <span class="off">{cat}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div style="position:relative;display:flex;margin-bottom:0.5px">
+    <input
+      id="q"
+      type="search"
+      placeholder={t.search}
+      autocomplete="off"
+      style="font-family:var(--sans);font-size:12.5px;font-weight:450;line-height:1.15;color:var(--ink);background:transparent;border:0;outline:none;padding:0 16px 3px 0;width:134px;height:17px;box-shadow:inset 0 -1px 0 var(--rule)"
+    />
+    <a
+      id="q-clear"
+      href="#"
+      aria-label="clear search"
+      hidden
+      style="position:absolute;right:0;top:1px;display:flex;align-items:center;text-decoration:none;color:var(--ink);font-size:12px;line-height:1"
+      >&#10005;</a
+    >
+  </div>
+</div>
+
+<main class="band">
+  <p
+    id="filter-line"
+    hidden
+    style="display:flex;align-items:baseline;gap:10px;font-size:12.5px;color:var(--muted);margin:0 0 10px"
+  >
+    <span id="filter-label"></span>
+    <a id="filter-clear" href="#" style="font-size:12px;color:var(--dim);text-decoration:none">{t.clear}</a>
+  </p>
+
+  <div id="rows" style="display:flex;flex-direction:column">
+    {
+      posts.map((post) => (
+        <a
+          class="row"
+          href={post.href}
+          data-cat={post.category}
+          data-tags={post.tags.join(' ')}
+          data-text={`${post.title} ${post.summary} ${post.tags.join(' ')} ${post.category}`.toLowerCase()}
+          style="display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:center;padding:10px 8px;margin:0 -8px;border-radius:4px;text-decoration:none;color:inherit"
+        >
+          <span style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-weight:450;font-size:16.5px;line-height:1.5;letter-spacing:-0.01em">{post.title}</span>
+          </span>
+          <span style="font-size:12px;color:var(--ink);white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums">
+            {post.meta}
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</main>
+
+<style>
+  .row:hover {
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  /* 활성 글자를 숨겨 두어 선택 여부와 무관하게 폭을 고정한다. */
+  .cat .on {
+    visibility: hidden;
+  }
+  .cat.active .on {
+    visibility: visible;
+  }
+  .cat.active .off {
+    visibility: hidden;
+  }
+  @media (max-width: 600px) {
+    #q {
+      width: 100% !important;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ noResultsTemplate: t.noResults }}>
+  (() => {
+    const rows = Array.from(document.querySelectorAll('.row'));
+    const cats = Array.from(document.querySelectorAll('.cat'));
+    const input = document.getElementById('q');
+    const clearQuery = document.getElementById('q-clear');
+    const line = document.getElementById('filter-line');
+    const label = document.getElementById('filter-label');
+    const clearFilter = document.getElementById('filter-clear');
+
+    const params = new URLSearchParams(location.search);
+    const state = { cat: params.get('cat'), tag: params.get('tag'), q: '' };
+
+    // 카테고리와 태그는 공유할 수 있도록 주소에 남기고 검색어는 남기지 않는다.
+    function syncUrl() {
+      const next = new URLSearchParams();
+      if (state.cat) next.set('cat', state.cat);
+      if (state.tag) next.set('tag', state.tag);
+      const query = next.toString();
+      history.replaceState(null, '', query ? `${location.pathname}?${query}` : location.pathname);
+    }
+
+    function apply() {
+      const q = state.q.trim().toLowerCase();
+      let shown = 0;
+
+      for (const row of rows) {
+        const okCat = !state.cat || row.dataset.cat === state.cat;
+        const okTag = !state.tag || row.dataset.tags.split(' ').includes(state.tag);
+        const okQuery = !q || row.dataset.text.includes(q);
+        const visible = okCat && okTag && okQuery;
+        row.hidden = !visible;
+        if (visible) shown += 1;
+      }
+
+      for (const cat of cats) cat.classList.toggle('active', cat.dataset.cat === state.cat);
+      clearQuery.hidden = !q;
+
+      if (state.tag) {
+        label.textContent = `#${state.tag} · ${shown}`;
+        clearFilter.hidden = false;
+        line.hidden = false;
+      } else if (q && shown === 0) {
+        label.textContent = noResultsTemplate.replace('{q}', state.q.trim());
+        clearFilter.hidden = true;
+        line.hidden = false;
+      } else {
+        line.hidden = true;
+      }
+    }
+
+    for (const cat of cats) {
+      cat.addEventListener('click', (event) => {
+        event.preventDefault();
+        state.cat = state.cat === cat.dataset.cat ? null : cat.dataset.cat;
+        syncUrl();
+        apply();
+      });
+    }
+
+    input.addEventListener('input', () => {
+      state.q = input.value;
+      apply();
+    });
+
+    clearQuery.addEventListener('click', (event) => {
+      event.preventDefault();
+      input.value = '';
+      state.q = '';
+      input.focus();
+      apply();
+    });
+
+    clearFilter.addEventListener('click', (event) => {
+      event.preventDefault();
+      state.tag = null;
+      syncUrl();
+      apply();
+    });
+
+    apply();
+  })();
+</script>
