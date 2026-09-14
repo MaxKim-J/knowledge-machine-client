@@ -19,6 +19,9 @@ const listHref = withLang(post.kind === 'article' ? '/' : '/knowledges', lang);
 const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
 ---
 
+<!-- 목록 페이지의 탭 줄이 차지하는 높이만큼 비워 본문 시작 위치를 맞춘다. -->
+<div class="band bar" aria-hidden="true"><div style="height:6.9px"></div></div>
+
 <main class="band">
   <article>
     <p style="font-size:12px;letter-spacing:0.04em;color:var(--dim);font-weight:500;margin:0 0 8px">
@@ -60,7 +63,7 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
         </span>
       </div>
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:0 0 12px">
-        <a class="quiet" href={listHref} style="color:var(--muted)">{t.back}</a>
+        <a class="quiet" id="back-to-list" href={listHref} style="color:var(--muted)">{t.back}</a>
         <span style="display:flex;gap:14px">
           {prev ? <a class="quiet" href={prev.href}>{t.prev}</a> : <span style="color:var(--rule)">{t.prev}</span>}
           {next ? <a class="quiet" href={next.href}>{t.next}</a> : <span style="color:var(--rule)">{t.next}</span>}
@@ -70,7 +73,7 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
 
       {
         related.length > 0 && (
-          <section style="padding:2px 0 14px">
+          <section class="related">
             <p style="font-size:12px;letter-spacing:0.04em;color:var(--dim);font-weight:500;margin:0 0 2px">
               {t.related}
             </p>
@@ -120,6 +123,10 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
   .row:hover {
     box-shadow: inset 0 0 0 1px var(--ink);
   }
+  .related {
+    margin-top: 34px;
+    padding: 0 0 14px;
+  }
   @media (max-width: 600px) {
     .ptitle {
       font-size: 22px;
@@ -128,8 +135,12 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
   }
 </style>
 
-<script is:inline define:vars={{ pool: related.map((item) => item.href), listHref }}>
-  (() => {
+<script is:inline>
+  // ClientRouter 전환 뒤에도 동작하도록 astro:page-load 마다 다시 묶는다.
+  window.kmSetupPost = () => {
+    const listHref = document.getElementById('back-to-list')?.getAttribute('href');
+    if (!listHref) return;
+    const pool = [...document.querySelectorAll('.related .row')].map((row) => row.getAttribute('href'));
     const copy = document.getElementById('copy-link');
     let timer;
     copy?.addEventListener('click', (event) => {
@@ -141,6 +152,20 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
         copy.textContent = copy.dataset.copy;
       }, 1600);
     });
+
+    // 팝오버가 오른쪽으로 넘치면 넘친 만큼 왼쪽으로 당긴다.
+    for (const note of document.querySelectorAll('.note')) {
+      const pop = note.querySelector('.note-pop');
+      if (!pop) continue;
+      const place = () => {
+        pop.style.left = '0px';
+        const width = Math.min(300, window.innerWidth - 32);
+        const overflow = note.getBoundingClientRect().left + width - (window.innerWidth - 16);
+        if (overflow > 0) pop.style.left = `${-Math.round(overflow)}px`;
+      };
+      note.addEventListener('mouseenter', place);
+      note.addEventListener('focusin', place);
+    }
 
     // 목록 페이지의 링크에서 고른다. 스크립트가 없으면 목록으로 이동한다.
     const random = document.getElementById('random');
@@ -160,5 +185,10 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
       if (!candidates.length) return;
       location.href = candidates[Math.floor(Math.random() * candidates.length)];
     });
-  })();
+  };
+
+  if (!window.kmPostBound) {
+    window.kmPostBound = true;
+    document.addEventListener('astro:page-load', () => window.kmSetupPost?.());
+  }
 </script>

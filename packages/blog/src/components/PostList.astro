@@ -80,6 +80,7 @@ const categories = categoriesFor(kind);
   <p
     id="filter-line"
     hidden
+    data-no-results={t.noResults}
     style="display:flex;align-items:baseline;gap:10px;font-size:12.5px;color:var(--muted);margin:0 0 10px"
   >
     <span id="filter-label"></span>
@@ -130,8 +131,10 @@ const categories = categoriesFor(kind);
   }
 </style>
 
-<script is:inline define:vars={{ noResultsTemplate: t.noResults }}>
-  (() => {
+<script is:inline>
+  // ClientRouter 는 전환할 때 문서를 교체하므로 스크립트가 다시 실행되지 않는다.
+  // astro:page-load 로 첫 진입과 전환 뒤 모두에서 다시 묶는다.
+  window.kmSetupList = () => {
     const rows = Array.from(document.querySelectorAll('.row'));
     const cats = Array.from(document.querySelectorAll('.cat'));
     const input = document.getElementById('q');
@@ -140,6 +143,8 @@ const categories = categoriesFor(kind);
     const label = document.getElementById('filter-label');
     const clearFilter = document.getElementById('filter-clear');
 
+    if (!input || !line) return;
+    const noResultsTemplate = line.dataset.noResults;
     const params = new URLSearchParams(location.search);
     const state = { cat: params.get('cat'), tag: params.get('tag'), q: '' };
 
@@ -211,5 +216,10 @@ const categories = categoriesFor(kind);
     });
 
     apply();
-  })();
+  };
+
+  if (!window.kmListBound) {
+    window.kmListBound = true;
+    document.addEventListener('astro:page-load', () => window.kmSetupList?.());
+  }
 </script>

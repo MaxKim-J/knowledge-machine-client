@@ -65,11 +65,72 @@ export async function findPost(kind: Kind, slug: string, lang: Lang): Promise<Po
   return posts.find((post) => post.slug === slug);
 }
 
+/** 한국어 조사와 영어 기능어처럼 어느 글에나 나오는 접미사. */
+const PARTICLE = /(은|는|이|가|을|를|의|에|에서|으로|로|와|과|도|만|부터|까지|께|한테)$/;
+const STOPWORD = new Set(['the', 'and', 'for', 'that', 'with', 'from', 'this', 'what', 'how', 'why']);
+
+function tokenize(post: Post): Set<string> {
+  const words = `${post.title} ${post.summary}`.toLowerCase().split(/[^a-z0-9가-힣]+/);
+  const out = new Set<string>();
+  for (const word of words) {
+    const token = /[가-힣]/.test(word) ? word.replace(PARTICLE, '') : word;
+    if (token.length >= 2 && !STOPWORD.has(token)) out.add(token);
+  }
+  return out;
+}
+
+type Index = { tokens: Map<string, Set<string>>; common: Set<string> };
+const indexes = new WeakMap<Post[], Index>();
+
+/**
+ * 제목·요약 단어 겹침을 사용하려면 어느 글에나 나오는 단어를 먼저 제외해야 한다.
+ * 네 편 중 한 편보다 흔한 단어는 변별력이 없으므로 점수에서 뺀다.
+ */
+function indexOf(all: Post[]): Index {
+  const cached = indexes.get(all);
+  if (cached) return cached;
+
+  const tokens = new Map<string, Set<string>>();
+  const frequency = new Map<string, number>();
+  for (const post of all) {
+    const set = tokenize(post);
+    tokens.set(post.id, set);
+    for (const token of set) frequency.set(token, (frequency.get(token) ?? 0) + 1);
+  }
+
+  const ceiling = Math.max(2, all.length * 0.25);
+  const common = new Set([...frequency].filter(([, n]) => n > ceiling).map(([token]) => token));
+
+  const index = { tokens, common };
+  indexes.set(all, index);
+  return index;
+}
+
+/**
+ * 관련도 점수. 같은 카테고리 2점, 같은 타입 1점, 겹치는 태그마다 2점에
+ * 제목·요약의 겹치는 단어마다 0.4점을 최대 1.6점까지 더한다.
+ *
+ * 태그 어휘가 넓게 흩어져 있어 태그만으로는 같은 카테고리의 최신 글이 그대로 올라오므로
+ * 단어 겹침으로 그 순서를 정한다. 단어 점수는 태그 하나(2점)를 넘지 못하게 상한을 정해,
+ * 태그가 겹치는 글이 있으면 언제나 그 글이 먼저 온다.
+ */
 export function relatedPosts(current: Post, all: Post[], limit = 3): Post[] {
-  const score = (post: Post) =>
-    (post.category === current.category ? 2 : 0) +
-    (post.kind === current.kind ? 1 : 0) +
-    post.tags.filter((tag) => current.tags.includes(tag)).length * 2;
+  const { tokens, common } = indexOf(all);
+  const mine = tokens.get(current.id) ?? tokenize(current);
+
+  const score = (post: Post) => {
+    const theirs = tokens.get(post.id);
+    let shared = 0;
+    if (theirs) {
+      for (const token of theirs) if (!common.has(token) && mine.has(token)) shared += 1;
+    }
+    return (
+      (post.category === current.category ? 2 : 0) +
+      (post.kind === current.kind ? 1 : 0) +
+      post.tags.filter((tag) => current.tags.includes(tag)).length * 2 +
+      Math.min(shared * 0.4, 1.6)
+    );
+  };
 
   return all
     .filter((post) => post.id !== current.id)

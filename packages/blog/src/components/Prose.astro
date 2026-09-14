@@ -15,7 +15,7 @@
   }
 
   .prose > p {
-    margin: 0 0 24px;
+    margin: 0 0 28px;
   }
 
   .prose h2 {
@@ -24,7 +24,7 @@
     font-size: 21px;
     line-height: 1.45;
     letter-spacing: -0.02em;
-    margin: 50px 0 14px;
+    margin: 76px 0 18px;
     color: var(--ink);
   }
 
@@ -34,7 +34,7 @@
     font-size: 18px;
     line-height: 1.45;
     letter-spacing: -0.02em;
-    margin: 38px 0 12px;
+    margin: 52px 0 14px;
     color: var(--ink);
   }
 
@@ -44,7 +44,7 @@
     font-family: var(--sans);
     font-weight: 600;
     font-size: 16.5px;
-    margin: 30px 0 10px;
+    margin: 40px 0 12px;
     color: var(--ink);
   }
 
@@ -68,7 +68,7 @@
   }
 
   .prose pre {
-    margin: 28px 0 26px;
+    margin: 32px 0 30px;
     padding: 14px;
     overflow-x: auto;
     background: var(--surface) !important;
@@ -82,7 +82,7 @@
   }
 
   .prose blockquote {
-    margin: 32px 0;
+    margin: 38px 0;
     padding: 2px 0 2px 20px;
     box-shadow: inset 2px 0 0 var(--ink);
     color: var(--ink);
@@ -97,7 +97,7 @@
 
   .prose ul,
   .prose ol {
-    margin: 4px 0 26px;
+    margin: 4px 0 30px;
     padding-left: 22px;
   }
 
@@ -127,7 +127,7 @@
 
   /* 표는 좁은 화면에서 본문 폭을 밀지 않고 스스로 가로 스크롤한다. */
   .prose .table-scroll {
-    margin: 28px 0 26px;
+    margin: 32px 0 30px;
     overflow-x: auto;
   }
 
@@ -163,6 +163,110 @@
     font-size: 12px;
     color: var(--dim);
     margin-top: 9px;
+  }
+
+  .prose > :first-child {
+    margin-top: 0;
+  }
+
+  /* 미주 */
+  .prose .note {
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .prose .note-mark {
+    font-family: var(--mono);
+    font-size: 11px;
+    vertical-align: super;
+    text-decoration: none;
+    padding: 0 1px 0 2px;
+  }
+
+  .prose .note-pop {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    z-index: 5;
+    display: none;
+    width: 300px;
+    max-width: calc(100vw - 32px);
+    padding-bottom: 9px;
+  }
+
+  .prose .note:hover .note-pop,
+  .prose .note:focus-within .note-pop {
+    display: block;
+  }
+
+  .prose .note-pop-body {
+    display: block;
+    padding: 10px 12px;
+    background: var(--bg);
+    box-shadow:
+      0 0 0 1px var(--ink),
+      0 8px 24px rgba(0, 0, 0, 0.08);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--body);
+    white-space: normal;
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .prose .note-n {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-right: 6px;
+  }
+
+  .prose .note-pop-body a {
+    font-size: 12px;
+    word-break: break-all;
+  }
+
+  .prose .endnote-rule {
+    margin-top: 40px;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .prose .endnotes {
+    margin-top: 20px;
+  }
+
+  .prose .endnotes ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .prose .endnotes li {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--body);
+  }
+
+  .prose .endnote-n {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .prose .endnote-host {
+    font-family: var(--sans);
+    font-size: 12px;
+    margin-left: 6px;
+    word-break: break-all;
   }
 
   .prose hr {
