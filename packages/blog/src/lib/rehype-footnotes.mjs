@@ -170,7 +170,11 @@ function endnotes(refs) {
           el('span', {}, [
             txt(ref.text),
             ...(ref.url
-              ? [el('a', { className: ['endnote-host'], href: ref.url, target: '_blank', rel: 'noreferrer' }, [txt(ref.host)])]
+              ? [
+                  el('a', { className: ['endnote-host'], href: ref.url, target: '_blank', rel: 'noreferrer' }, [
+                    txt(ref.host),
+                  ]),
+                ]
               : []),
           ]),
         ]),

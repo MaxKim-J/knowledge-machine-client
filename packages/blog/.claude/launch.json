@@ -1,6 +1,11 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "blog-preview", "runtimeExecutable": "pnpm", "runtimeArgs": ["exec", "astro", "preview", "--port", "4321"], "port": 4321 }
+    {
+      "name": "blog-preview",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "astro", "preview", "--port", "4321"],
+      "port": 4321
+    }
   ]
 }

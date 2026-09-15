@@ -32,6 +32,8 @@ const target = new URL(to, Astro.site);
   </head>
   <body>
     <a href={to}>{target.toString()}</a>
-    <script is:inline define:vars={{ to }}>location.replace(to);</script>
+    <script is:inline define:vars={{ to }}>
+      location.replace(to);
+    </script>
   </body>
 </html>

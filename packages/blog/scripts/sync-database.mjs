@@ -13,7 +13,9 @@ const dbRoot = path.join(repoRoot, 'database');
 const imagesOut = path.join(blogRoot, 'public', 'images');
 
 const run = (args, cwd) =>
-  execFileSync('git', args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] }).toString().trim();
+  execFileSync('git', args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] })
+    .toString()
+    .trim();
 
 function updateSubmodule() {
   if (process.env.SKIP_DB_SYNC === '1') {

@@ -13,7 +13,11 @@
     "dev": "astro dev",
     "preview": "astro preview",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
@@ -25,7 +29,10 @@
   },
   "private": true,
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.4",
-    "unist-util-visit": "^5.1.0"
+    "typescript": "^6.0.3",
+    "unist-util-visit": "^5.1.0",
+    "vitest": "^5.0.1"
   }
 }

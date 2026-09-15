@@ -41,9 +41,7 @@ export function formatDate(date: Date, lang: Lang): string {
   const y = date.getUTCFullYear();
   const m = date.getUTCMonth() + 1;
   const d = date.getUTCDate();
-  return lang === 'en'
-    ? `${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}/${y}`
-    : `${y}년 ${m}월 ${d}일`;
+  return lang === 'en' ? `${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}/${y}` : `${y}년 ${m}월 ${d}일`;
 }
 
 /** 언어별 경로 접두사. ko 는 루트, en 은 /en 아래. */

@@ -20,7 +20,9 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
 ---
 
 <!-- 목록 페이지의 탭 줄이 차지하는 높이만큼 비워 본문 시작 위치를 맞춘다. -->
-<div class="band bar" aria-hidden="true"><div style="height:6.9px"></div></div>
+<div class="band bar" aria-hidden="true">
+  <div style="height:6.9px"></div>
+</div>
 
 <main class="band">
   <article>
@@ -29,17 +31,13 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
     </p>
     <h1 class="ptitle">{post.title}</h1>
     <p style="font-weight:350;font-size:15.5px;line-height:1.7;color:var(--muted);margin:0 0 14px">{post.summary}</p>
-    <div
-      style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-size:12.5px;color:var(--dim);margin:0 0 40px"
-    >
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-size:12.5px;color:var(--dim);margin:0 0 40px">
       <span style="font-variant-numeric:tabular-nums">{post.meta}</span>
-      {
-        post.tags.map((tag) => (
-          <a href={tagHref(tag)} class="tag" style="color:var(--muted);text-decoration:none">
-            #{tag}
-          </a>
-        ))
-      }
+      {post.tags.map((tag) => (
+        <a href={tagHref(tag)} class="tag" style="color:var(--muted);text-decoration:none">
+          #{tag}
+        </a>
+      ))}
     </div>
 
     <Prose>
@@ -50,52 +48,72 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:0 0 12px">
         <span style="color:var(--muted)">{t.writtenBy}</span>
         <span style="display:flex;gap:14px">
-          <a class="quiet" href="mailto:hwaseen@gmail.com">{t.email}</a>
-          <a class="quiet" id="copy-link" href="#" data-copy={t.copy} data-copied={t.copied}>{t.copy}</a>
+          <a class="quiet" href="mailto:hwaseen@gmail.com">
+            {t.email}
+          </a>
+          <a class="quiet" id="copy-link" href="#" data-copy={t.copy} data-copied={t.copied}>
+            {t.copy}
+          </a>
           <a
             class="quiet"
             href={`https://x.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(
               new URL(post.href, Astro.site).toString(),
             )}`}
             target="_blank"
-            rel="noreferrer">{t.shareX}</a
+            rel="noreferrer"
           >
+            {t.shareX}
+          </a>
         </span>
       </div>
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:0 0 12px">
-        <a class="quiet" id="back-to-list" href={listHref} style="color:var(--muted)">{t.back}</a>
+        <a class="quiet" id="back-to-list" href={listHref} style="color:var(--muted)">
+          {t.back}
+        </a>
         <span style="display:flex;gap:14px">
-          {prev ? <a class="quiet" href={prev.href}>{t.prev}</a> : <span style="color:var(--rule)">{t.prev}</span>}
-          {next ? <a class="quiet" href={next.href}>{t.next}</a> : <span style="color:var(--rule)">{t.next}</span>}
-          <a class="quiet" id="random" href={listHref}>{t.random}</a>
+          {prev ? (
+            <a class="quiet" href={prev.href}>
+              {t.prev}
+            </a>
+          ) : (
+            <span style="color:var(--rule)">{t.prev}</span>
+          )}
+          {next ? (
+            <a class="quiet" href={next.href}>
+              {t.next}
+            </a>
+          ) : (
+            <span style="color:var(--rule)">{t.next}</span>
+          )}
+          <a class="quiet" id="random" href={listHref}>
+            {t.random}
+          </a>
         </span>
       </div>
 
-      {
-        related.length > 0 && (
-          <section class="related">
-            <p style="font-size:12px;letter-spacing:0.04em;color:var(--dim);font-weight:500;margin:0 0 2px">
-              {t.related}
-            </p>
-            <div style="display:flex;flex-direction:column">
-              {related.map((item) => (
-                <a
-                  class="row"
-                  href={item.href}
-                  style="display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:center;padding:5px 8px;margin:0 -8px;border-radius:4px;text-decoration:none;color:inherit"
-                >
-                  <span style="font-weight:450;font-size:15.5px;line-height:1.5;letter-spacing:-0.01em">
-                    {item.title}
-                  </span>
-                  <span style="font-size:12px;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums">
-                    {item.meta}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )
-      }
+      {related.length > 0 && (
+        <section class="related">
+          <p style="font-size:12px;letter-spacing:0.04em;color:var(--dim);font-weight:500;margin:0 0 2px">
+            {t.related}
+          </p>
+          <div style="display:flex;flex-direction:column">
+            {related.map((item) => (
+              <a
+                class="row"
+                href={item.href}
+                style="display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:center;padding:5px 8px;margin:0 -8px;border-radius:4px;text-decoration:none;color:inherit"
+              >
+                <span style="font-weight:450;font-size:15.5px;line-height:1.5;letter-spacing:-0.01em">
+                  {item.title}
+                </span>
+                <span style="font-size:12px;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums">
+                  {item.meta}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   </article>
 </main>

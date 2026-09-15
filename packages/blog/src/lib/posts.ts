@@ -1,4 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+
+/** articles 와 knowledges 는 같은 스키마를 쓰므로 어느 쪽 항목이든 받는다. */
+type Entry = CollectionEntry<'articles'> | CollectionEntry<'knowledges'>;
 import { type Lang, formatDate, withLang } from './i18n';
 
 export type Kind = 'article' | 'knowledge';
@@ -17,19 +20,16 @@ export type Post = {
   meta: string;
   /** 공유 카드 이미지의 사이트 루트 기준 경로. */
   thumbnail: string;
-  entry: CollectionEntry<'articles'>;
+  entry: Entry;
 };
 
-const COLLECTIONS = {
-  article: { ko: 'articles', en: 'articlesEn' },
-  knowledge: { ko: 'knowledges', en: 'knowledgesEn' },
-} as const;
+const COLLECTIONS = { article: 'articles', knowledge: 'knowledges' } as const;
 
 export function postHref(kind: Kind, slug: string, lang: Lang): string {
   return withLang(`/${kind === 'article' ? 'articles' : 'knowledges'}/${slug}`, lang);
 }
 
-function toPost(entry: CollectionEntry<'articles'>, kind: Kind, lang: Lang): Post {
+function toPost(entry: Entry, kind: Kind, lang: Lang): Post {
   const { data } = entry;
   return {
     id: `${kind}:${data.slug}`,
@@ -59,7 +59,7 @@ const IMAGE = /!\[[^\]]*\]\(([^)\s]+)[^)]*\)|<img[^>]+src=["']([^"']+)["']/;
  * 원문은 이미지를 `images/...` 상대 경로로 참조하고 sync-database 가 파일을
  * public/images/{slug}/ 로 옮기므로 같은 규칙으로 경로를 바꾼다.
  */
-function thumbnailOf(entry: CollectionEntry<'articles'>): string {
+function thumbnailOf(entry: Entry): string {
   const toSitePath = (value: string) => {
     if (/^https?:\/\//.test(value)) return value;
     const relative = value.replace(/^\.?\//, '');
@@ -81,9 +81,10 @@ export async function getPosts(lang: Lang, kind?: Kind): Promise<Post[]> {
   const kinds: Kind[] = kind ? [kind] : ['article', 'knowledge'];
   const groups = await Promise.all(
     kinds.map(async (k) => {
-      const name = COLLECTIONS[k][lang];
-      const entries = (await getCollection(name as 'articles')) ?? [];
-      return entries.filter((entry) => entry.data.published).map((entry) => toPost(entry, k, lang));
+      const entries = (await getCollection(COLLECTIONS[k])) ?? [];
+      return entries
+        .filter((entry) => entry.data.published && entry.data.lang === lang)
+        .map((entry) => toPost(entry, k, lang));
     }),
   );
   return groups.flat().sort(byDateDesc);

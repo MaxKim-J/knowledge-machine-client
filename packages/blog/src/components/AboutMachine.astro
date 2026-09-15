@@ -109,32 +109,30 @@ const copy = COPY[lang];
 
 <main class="band">
   <h1 class="atitle">{copy.title}</h1>
-  {copy.lead.map((line) => <p class="alead">{line}</p>)}
+  {copy.lead.map((line) => (
+    <p class="alead">{line}</p>
+  ))}
 
   <div style="display:flex;flex-direction:column;margin:34px 0 40px">
-    {
-      copy.stages.map((stage) => (
-        <div class="deflist" style="padding:0 0 22px">
-          <span style="font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500">{stage.name}</span>
-          <span style="display:flex;flex-direction:column;gap:6px">
-            <span style="font-size:16px;line-height:1.7;color:#111111">{stage.desc}</span>
-            <span style="font-size:12.5px;color:var(--dim)">{stage.note}</span>
-          </span>
-        </div>
-      ))
-    }
+    {copy.stages.map((stage) => (
+      <div class="deflist" style="padding:0 0 22px">
+        <span style="font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500">{stage.name}</span>
+        <span style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:16px;line-height:1.7;color:#111111">{stage.desc}</span>
+          <span style="font-size:12.5px;color:var(--dim)">{stage.note}</span>
+        </span>
+      </div>
+    ))}
   </div>
 
-  {
-    copy.sections.map((section, index) => (
-      <>
-        <h2 class="asub" style={index === 0 ? 'margin:0 0 12px' : 'margin:38px 0 12px'}>
-          {section.heading}
-        </h2>
-        <p class="alead">{section.body}</p>
-      </>
-    ))
-  }
+  {copy.sections.map((section, index) => (
+    <>
+      <h2 class="asub" style={index === 0 ? 'margin:0 0 12px' : 'margin:38px 0 12px'}>
+        {section.heading}
+      </h2>
+      <p class="alead">{section.body}</p>
+    </>
+  ))}
 </main>
 
 <style>

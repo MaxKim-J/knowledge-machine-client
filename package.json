@@ -10,6 +10,22 @@
   "scripts": {
     "dev": "pnpm --filter blog dev",
     "build": "pnpm -r build",
-    "preview": "pnpm --filter blog preview"
+    "preview": "pnpm --filter blog preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm --filter blog check",
+    "test": "pnpm -r test",
+    "verify": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.10.0",
+    "eslint-plugin-astro": "^3.1.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^1.0.0",
+    "typescript-eslint": "^8.70.0"
   }
 }

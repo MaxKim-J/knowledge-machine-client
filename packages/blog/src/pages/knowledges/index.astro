@@ -13,5 +13,10 @@ const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), get
   description="사실과 맥락을 중심으로 쓴 짧은 글 모음."
   altPath="/en/knowledges"
 >
-  <PostList lang={lang} kind="knowledge" posts={knowledges} counts={{ article: articles.length, knowledge: knowledges.length }} />
+  <PostList
+    lang={lang}
+    kind="knowledge"
+    posts={knowledges}
+    counts={{ article: articles.length, knowledge: knowledges.length }}
+  />
 </Base>

@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { T, withLang, type Lang } from '../lib/i18n';
+import { withLang, type Lang } from '../lib/i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -18,7 +18,6 @@ interface Props {
 }
 
 const { lang, title, description, altPath, active, ogImage, ogType = 'website', publishedAt } = Astro.props;
-const t = T[lang];
 const other: Lang = lang === 'ko' ? 'en' : 'ko';
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const DEFAULT_OG = '/default-thumbnail.png';
@@ -68,7 +67,10 @@ const nav = [
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2"
       crossorigin
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+    />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" />
     {/* 세리프 모드를 켤 때 Newsreader 와 Noto Serif KR 스타일시트를 여기에 다시 넣는다.
         비활성 상태에서는 한 글자도 렌더되지 않으면서 @font-face 선언만 635개 받는다. */}
@@ -86,19 +88,19 @@ const nav = [
           </svg>
         </a>
         <nav class="nav">
-          {
-            nav.map((item) => (
-              <a class="swap" href={item.href}>
-                <span class="ghost">{item.label}</span>
-                <span class={active === item.key ? 'on' : 'off'}>{item.label}</span>
-              </a>
-            ))
-          }
+          {nav.map((item) => (
+            <a class="swap" href={item.href}>
+              <span class="ghost">{item.label}</span>
+              <span class={active === item.key ? 'on' : 'off'}>{item.label}</span>
+            </a>
+          ))}
           <a class="swap" href={altPath} style="color:var(--dim)">
             <span class="ghost">en</span>
             <span class="off">{other}</span>
           </a>
-          <a href="/rss.xml" style="color:var(--dim);text-decoration:none">rss</a>
+          <a href="/rss.xml" style="color:var(--dim);text-decoration:none">
+            rss
+          </a>
         </nav>
       </header>
 

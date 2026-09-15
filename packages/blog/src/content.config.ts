@@ -18,15 +18,23 @@ const entrySchema = z.object({
   thumbnail: z.string().optional(),
 });
 
+/**
+ * 언어를 컬렉션으로 가르지 않고 한 컬렉션에 모은 뒤 frontmatter 의 `lang` 으로 구분한다.
+ * 영문본이 없는 종류가 생기면 빈 컬렉션이 되어 Astro 가 경고를 남긴다.
+ */
 const collection = (kind: 'articles' | 'knowledges', file: string) =>
   defineCollection({
-    loader: glob({ base: `${DATABASE}/${kind}`, pattern: `*/${file}` }),
+    loader: glob({
+      base: `${DATABASE}/${kind}`,
+      pattern: `*/${file}*.md`,
+      // 기본 id 는 slug 에서 나오는데 한국어 원문과 영문본이 같은 slug 를 사용한다.
+      // 파일 경로로 만들어 한 컬렉션 안에서 겹치지 않게 한다.
+      generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+    }),
     schema: entrySchema,
   });
 
 export const collections = {
-  articles: collection('articles', 'article.md'),
-  articlesEn: collection('articles', 'article.en.md'),
-  knowledges: collection('knowledges', 'knowledge.md'),
-  knowledgesEn: collection('knowledges', 'knowledge.en.md'),
+  articles: collection('articles', 'article'),
+  knowledges: collection('knowledges', 'knowledge'),
 };

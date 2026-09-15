@@ -33,7 +33,11 @@ const copy = COPY[lang];
 const links = [
   { label: 'github', text: 'github.com/MaxKim-J', url: 'https://github.com/MaxKim-J' },
   { label: 'x', text: '@max_kim_dev', url: 'https://x.com/max_kim_dev' },
-  { label: 'linkedin', text: 'linkedin.com/in/종혁-김', url: 'https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/' },
+  {
+    label: 'linkedin',
+    text: 'linkedin.com/in/종혁-김',
+    url: 'https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/',
+  },
   { label: 'resume', text: 'github.com/MaxKim-J/RESUME', url: 'https://github.com/MaxKim-J/RESUME' },
   { label: 'email', text: 'hwaseen@gmail.com', url: 'mailto:hwaseen@gmail.com' },
   { label: 'rss', text: copy.feed, url: '/rss.xml' },
@@ -42,17 +46,17 @@ const links = [
 
 <main class="band">
   <h1 class="atitle">{copy.title}</h1>
-  {copy.paragraphs.map((line) => <p style="margin:0 0 20px;color:var(--body)">{line}</p>)}
+  {copy.paragraphs.map((line) => (
+    <p style="margin:0 0 20px;color:var(--body)">{line}</p>
+  ))}
 
   <div style="display:flex;flex-direction:column;margin:32px 0 0">
-    {
-      links.map((link) => (
-        <div class="deflist" style="padding:0 0 10px;font-size:13.5px">
-          <span style="color:var(--dim)">{link.label}</span>
-          <a href={link.url}>{link.text}</a>
-        </div>
-      ))
-    }
+    {links.map((link) => (
+      <div class="deflist" style="padding:0 0 10px;font-size:13.5px">
+        <span style="color:var(--dim)">{link.label}</span>
+        <a href={link.url}>{link.text}</a>
+      </div>
+    ))}
   </div>
 </main>
 

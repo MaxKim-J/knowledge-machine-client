@@ -5,10 +5,10 @@
 
 ## 패키지
 
-| 경로 | 이름 | 설명 |
-|------|------|------|
-| `packages/blog` | `blog` | Astro 정적 사이트 |
-| `database` | 서브모듈 | 글 원문 저장소 |
+| 경로            | 이름     | 설명              |
+| --------------- | -------- | ----------------- |
+| `packages/blog` | `blog`   | Astro 정적 사이트 |
+| `database`      | 서브모듈 | 글 원문 저장소    |
 
 ## 실행
 
@@ -24,19 +24,28 @@ pnpm build    # 전체 패키지 빌드
 `packages/blog/public/images/{slug}/` 로 복사한다. 네트워크가 없으면 현재 체크아웃으로
 빌드를 계속한다. 서브모듈 갱신을 건너뛰려면 `SKIP_DB_SYNC=1` 을 지정한다.
 
+## 검증
+
+```bash
+pnpm verify    # format:check + lint + typecheck + test
+```
+
+`pre-push` 훅이 푸시할 때마다 `pnpm verify` 를 실행한다. 개별 명령은 `pnpm lint`,
+`pnpm typecheck`, `pnpm test`, `pnpm format` 으로 따로 실행한다.
+
 ## 발행 대상
 
 `published: true` 인 article 과 knowledge 만 페이지로 만든다. 한국어 원문은 루트 경로에,
 영문 번역본은 `/en` 아래에 둔다.
 
-| 경로 | 내용 |
-|------|------|
-| `/` · `/en` | article 목록 |
-| `/knowledges` · `/en/knowledges` | knowledge 목록 |
-| `/articles/{slug}` · `/knowledges/{slug}` | 글 상세 |
-| `/about` · `/author` | 지식기계 소개, 저자 소개 |
-| `/posts/{slug}` | 구 블로그 주소의 리다이렉트 |
-| `/rss.xml` · `/en/rss.xml` | RSS 피드 |
+| 경로                                      | 내용                        |
+| ----------------------------------------- | --------------------------- |
+| `/` · `/en`                               | article 목록                |
+| `/knowledges` · `/en/knowledges`          | knowledge 목록              |
+| `/articles/{slug}` · `/knowledges/{slug}` | 글 상세                     |
+| `/about` · `/author`                      | 지식기계 소개, 저자 소개    |
+| `/posts/{slug}`                           | 구 블로그 주소의 리다이렉트 |
+| `/rss.xml` · `/en/rss.xml`                | RSS 피드                    |
 
 ## 디자인
 
