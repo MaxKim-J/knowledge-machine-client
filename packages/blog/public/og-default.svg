@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FFFFFF"></rect>
-  <g transform="translate(470 215) scale(16)">
-    <circle cx="6.8" cy="8.6" r="6.2" fill="#000000"></circle>
-    <circle cx="11.2" cy="4.2" r="4.6" fill="#FFFFFF"></circle>
-    <rect x="9.9" y="2.3" width="3.2" height="3.2" fill="#000000"></rect>
-  </g>
-  <text x="600" y="500" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="46" font-weight="600" fill="#000000">knowledge machine</text>
-</svg>

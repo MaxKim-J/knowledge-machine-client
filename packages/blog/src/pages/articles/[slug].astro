@@ -25,6 +25,9 @@ const { post, prev, next, related } = Astro.props;
   lang={lang}
   title={`${post.title} · knowledge machine`}
   description={post.summary}
+  ogImage={post.thumbnail}
+  ogType="article"
+  publishedAt={post.date}
   altPath={`/en/articles/${post.slug}`}
 >
   <PostView lang={lang} post={post} prev={prev} next={next} related={related} />

@@ -14,6 +14,8 @@ const entrySchema = z.object({
   tags: z.array(z.string()).default([]),
   lang: z.enum(['ko', 'en']),
   published: z.boolean(),
+  /** 공유 카드 이미지. 지정하지 않으면 본문 첫 이미지를, 그것도 없으면 기본 이미지를 사용한다. */
+  thumbnail: z.string().optional(),
 });
 
 const collection = (kind: 'articles' | 'knowledges', file: string) =>

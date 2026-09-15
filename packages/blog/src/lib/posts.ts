@@ -15,6 +15,8 @@ export type Post = {
   tags: string[];
   href: string;
   meta: string;
+  /** 공유 카드 이미지의 사이트 루트 기준 경로. */
+  thumbnail: string;
   entry: CollectionEntry<'articles'>;
 };
 
@@ -41,8 +43,35 @@ function toPost(entry: CollectionEntry<'articles'>, kind: Kind, lang: Lang): Pos
     tags: data.tags,
     href: postHref(kind, data.slug, lang),
     meta: formatDate(data.date, lang),
+    thumbnail: thumbnailOf(entry),
     entry,
   };
+}
+
+export const DEFAULT_THUMBNAIL = '/default-thumbnail.png';
+
+const IMAGE = /!\[[^\]]*\]\(([^)\s]+)[^)]*\)|<img[^>]+src=["']([^"']+)["']/;
+
+/**
+ * 공유 카드 이미지를 정한다. frontmatter 의 thumbnail 이 있으면 그것을 사용하고
+ * 없으면 본문 첫 이미지를, 그것도 없으면 기본 이미지를 사용한다.
+ *
+ * 원문은 이미지를 `images/...` 상대 경로로 참조하고 sync-database 가 파일을
+ * public/images/{slug}/ 로 옮기므로 같은 규칙으로 경로를 바꾼다.
+ */
+function thumbnailOf(entry: CollectionEntry<'articles'>): string {
+  const toSitePath = (value: string) => {
+    if (/^https?:\/\//.test(value)) return value;
+    const relative = value.replace(/^\.?\//, '');
+    return relative.startsWith('images/')
+      ? `/images/${entry.data.slug}/${relative.slice('images/'.length)}`
+      : `/${relative}`;
+  };
+
+  if (entry.data.thumbnail) return toSitePath(entry.data.thumbnail);
+  const found = entry.body?.match(IMAGE);
+  const source = found?.[1] ?? found?.[2];
+  return source ? toSitePath(source) : DEFAULT_THUMBNAIL;
 }
 
 const byDateDesc = (a: Post, b: Post) => b.date.getTime() - a.date.getTime();
