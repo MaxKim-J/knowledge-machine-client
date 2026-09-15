@@ -11,76 +11,94 @@ const COPY = {
   ko: {
     title: '지식기계',
     lead: [
-      '지식기계는 읽고 본 것을 잃어버리지 않기 위한 파이프라인입니다. 원재료에서 발행까지 네 단계를 지나며, 각 단계는 고정된 스키마를 가집니다. 옵시디언 저장소(knowledge-machine-database)가 원본이고, 이 블로그는 그 저장소를 동기화해 정적 페이지로 빌드합니다.',
+      '읽는 속도가 쓰는 속도를 앞지르면 이해하지 못한 자료가 부채처럼 쌓입니다. 지식기계는 그 부채를 남겨두지 않으려고 만든 파이프라인입니다. 자료는 네 단계를 지나며 점점 정형화됩니다. 각 단계는 고정된 스키마와 그 단계에서만 허용되는 작업을 규정합니다.',
+      '저장소(knowledge-machine-database)는 옵시디언 vault이면서 코딩 에이전트의 작업장입니다. 이 블로그는 그 저장소를 읽어 정적 페이지로 빌드합니다.',
     ],
     stages: [
       {
         name: 'resource',
-        desc: '유튜브 영상, 책, 아티클처럼 접근 가능한 비정형 원재료.',
-        note: '저장하지 않고 주소와 접근 경로만 남긴다',
+        desc: '유튜브 영상, 책, 아티클처럼 다시 찾아갈 수 있는 원재료.',
+        note: '복사해 보관하지 않고 주소와 접근 경로만 기록',
       },
       {
         name: 'reference',
-        desc: '원재료 하나와 1:1로 대응하는 정형 기록. 스키마를 가진다.',
-        note: '블로그에 발행되지 않음 · 짧은 평과 함께 SNS로 공유',
+        desc: '원재료 하나를 요약과 인용, 질문과 메모로 정형화한 기록.',
+        note: '발행하지 않음 · 인용 검수를 통과해야 생성',
       },
       {
         name: 'knowledge',
-        desc: '사실과 약한 의견으로 구성한 짧은 정형 문헌. 미주로 출처를 링크한다.',
-        note: '발행 대상 · tech / human / culture / business / investment',
+        desc: '사실과 맥락을 중심으로 쓰고 의견은 약하게 담은 짧은 글.',
+        note: '발행 대상 · 미주로 출처 표기',
       },
       {
         name: 'article',
-        desc: '주제가 복잡하고 필자의 의견이 강하게 드러나는 글.',
-        note: '발행 대상 · tech / human / culture / business / investment',
+        desc: '논증이 복잡하고 필자의 의견과 경험이 분명하게 드러나는 글.',
+        note: '발행 대상 · journal 분류 추가 사용',
       },
     ],
     sections: [
       {
-        heading: '발행되는 것',
-        body: '블로그에는 knowledge와 article만 올라옵니다. 둘 다 같은 대분류(tech · human · culture · business · investment)를 따르고, 차이는 글의 성격에 있습니다. knowledge는 사실 위주, article은 의견 위주입니다. reference는 발행되지 않고 짧은 평과 함께 SNS로만 공유됩니다.',
+        heading: '읽음 처리',
+        body: '모든 reference는 읽지 않음 상태로 시작합니다. 질문과 답 또는 메모가 실제로 붙어야 읽음으로 바뀝니다. 요약만 있는 문서는 아직 읽지 않은 자료로 남습니다. 읽은 분량이 아니라 이해한 내용을 기준으로 삼으려고 두 상태를 나눕니다.',
+      },
+      {
+        heading: '에이전트의 경계',
+        body: '에이전트는 자료를 정형화하고 파일명과 스키마, 발행 상태를 관리합니다. 대신 원문에 없는 내용을 채우지 않고 제가 말하지 않은 생각을 메모로 만들지 않습니다. 판단은 사람이 하고 기계는 형식만 지킵니다. 이 경계가 무너지면 지식 대신 그럴듯한 문장만 쌓입니다.',
+      },
+      {
+        heading: '발행 대상',
+        body: '블로그에는 knowledge와 article만 올라옵니다. 둘은 같은 대분류(tech · human · culture · business · investment)를 공유하고 article만 journal을 추가로 사용합니다. reference는 발행하지 않고 짧은 평과 함께 소셜 미디어로만 공유합니다.',
       },
       {
         heading: '동기화',
-        body: '빌드할 때마다 저장소의 최신 커밋을 가져와 정적 페이지를 다시 만듭니다. 글을 복사해 보관하지 않으므로, 원본을 고치면 다음 빌드가 그대로 따라옵니다.',
+        body: '이 블로그는 저장소를 서브모듈로 읽습니다. 빌드할 때마다 최신 커밋을 가져와 페이지를 다시 만들고 글을 복사해 보관하지 않으므로 원본을 고치면 다음 빌드가 그대로 따라옵니다. 어떤 글이 올라갈지는 그 글의 frontmatter가 정합니다.',
       },
     ],
   },
   en: {
     title: 'Knowledge Machine',
     lead: [
-      'Knowledge Machine is a pipeline for not losing what I read and watch. Material passes through four stages on its way to publication, and each stage has a fixed schema. An Obsidian vault (knowledge-machine-database) holds the originals, and this blog syncs that vault and builds static pages from it.',
+      'When reading outpaces writing, material I never understood piles up. Knowledge Machine is a pipeline built so that debt does not accumulate. Material passes through four stages, growing more structured at each one, and every stage has a fixed schema and its own permitted operations.',
+      'The vault (knowledge-machine-database) is both an Obsidian workspace and a working directory for coding agents. This blog reads that repository and builds static pages from it.',
     ],
     stages: [
       {
         name: 'resource',
-        desc: 'Unstructured raw material I can reach again: videos, books, articles.',
+        desc: 'Raw material I can reach again: videos, books, articles.',
         note: 'never copied, only the address and the way back',
       },
       {
         name: 'reference',
-        desc: 'A structured record that maps one to one onto a single source.',
-        note: 'not published here, shared on social media with a short note',
+        desc: 'One source turned into a summary, quotes, questions, and notes.',
+        note: 'not published · created only when its quotes pass review',
       },
       {
         name: 'knowledge',
-        desc: 'A short structured piece built on facts, with sources linked in endnotes.',
-        note: 'published · tech / human / culture / business / investment',
+        desc: 'A short piece built on facts and context, with opinion kept light.',
+        note: 'published · sources linked in endnotes',
       },
       {
         name: 'article',
-        desc: 'A longer piece where the subject is complex and the opinion is mine.',
-        note: 'published · tech / human / culture / business / investment',
+        desc: 'A longer piece where the argument is complex and the opinion is mine.',
+        note: 'published · also uses the journal category',
       },
     ],
     sections: [
       {
+        heading: 'What counts as read',
+        body: 'Every reference starts unread. It only turns read once a question and answer or a note is actually attached. A document with nothing but a summary stays unread. The measure is what I understood, not what I got through.',
+      },
+      {
+        heading: 'What the agent does not do',
+        body: 'Agents structure the material and maintain filenames, schemas, and publication state. They never fill in what the source does not say, and never turn thoughts I did not express into notes. People judge; the machine only keeps the form. Once that line blurs, what accumulates is plausible prose rather than knowledge.',
+      },
+      {
         heading: 'What gets published',
-        body: 'Only knowledge and articles appear here. Both share the same top-level categories (tech · human · culture · business · investment); the difference is in character. Knowledge leans on facts, articles on opinion. References are never published, only shared on social media with a short note.',
+        body: 'Only knowledge and articles appear here. Both share the same top-level categories (tech · human · culture · business · investment), and only articles also use journal. References are never published, only shared on social media with a short note.',
       },
       {
         heading: 'Syncing',
-        body: 'Every build pulls the latest commit from the vault and regenerates the pages. Nothing is copied and kept, so editing the original is enough — the next build follows.',
+        body: 'This blog reads the vault as a submodule. Every build pulls the latest commit and regenerates the pages. Nothing is copied and kept, so editing the original is enough for the next build to follow. Its own frontmatter decides whether a piece ships.',
       },
     ],
   },

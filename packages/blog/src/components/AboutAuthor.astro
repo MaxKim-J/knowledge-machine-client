@@ -9,18 +9,20 @@ const { lang } = Astro.props;
 
 const COPY = {
   ko: {
-    title: '김맥스',
+    title: '김종혁',
     paragraphs: [
-      '프론트엔드 엔지니어. flex팀에서 웹 플랫폼과 개발 경험을 만듭니다. 모듈 연합, 개발 서버, 생성형 UI처럼 만드는 방식 자체를 바꾸는 주제를 오래 붙잡고 있습니다.',
-      '읽고 걷고 달립니다. 기술 밖의 글은 대체로 사람과 노동, 도시, 음악에 관한 것입니다. 잘못된 내용을 발견하면 알려주세요.',
+      'Product Engineer. flex팀에서 웹 플랫폼과 개발 경험을 만듭니다. 소프트웨어 엔지니어링으로 수 년째 생계를 꾸리고 있습니다.',
+      '복잡한 문제를 삶이나 사회, 공학의 영역에서 잘 다루는 것에 관심이 많습니다. 공동체에 대해 자주 생각하고 약자가 죽지 않아도 되는 세상을 원합니다. 영문학을 전공했습니다.',
+      '읽고 걷고 달립니다. 잘못된 내용을 발견하면 알려주세요.',
     ],
     feed: '전체 글 피드',
   },
   en: {
-    title: 'Max Kim',
+    title: 'Jonghyuk Max Kim',
     paragraphs: [
-      'Frontend engineer. I build the web platform and developer experience on the flex team. I keep returning to subjects that change how software gets made: module federation, dev servers, generative UI.',
-      'I read, walk, and run. Outside of technology I mostly write about people and work, cities, and music. Tell me when something here is wrong.',
+      'Product engineer. I build the web platform and developer experience on the flex team, and have earned my living through software engineering for several years.',
+      'I care about handling complex problems well, in life and society as much as in engineering. I think about community often and want a world where the vulnerable do not have to die. I majored in English literature.',
+      'I read, walk, and run. Tell me when something here is wrong.',
     ],
     feed: 'Full feed',
   },
@@ -29,8 +31,10 @@ const COPY = {
 const copy = COPY[lang];
 
 const links = [
-  { label: 'github', text: 'github.com/maxkim-j', url: 'https://github.com/maxkim-j' },
+  { label: 'github', text: 'github.com/MaxKim-J', url: 'https://github.com/MaxKim-J' },
   { label: 'x', text: '@max_kim_dev', url: 'https://x.com/max_kim_dev' },
+  { label: 'linkedin', text: 'linkedin.com/in/종혁-김', url: 'https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/' },
+  { label: 'resume', text: 'github.com/MaxKim-J/RESUME', url: 'https://github.com/MaxKim-J/RESUME' },
   { label: 'email', text: 'hwaseen@gmail.com', url: 'mailto:hwaseen@gmail.com' },
   { label: 'rss', text: copy.feed, url: '/rss.xml' },
 ];

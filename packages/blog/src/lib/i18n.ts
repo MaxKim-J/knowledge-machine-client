@@ -5,7 +5,7 @@ export const LANGS: Lang[] = ['ko', 'en'];
 export const T = {
   ko: {
     search: 'search',
-    writtenBy: 'Written by 김맥스',
+    writtenBy: 'Written by 김종혁',
     email: '이메일 보내기',
     copy: '링크 복사하기',
     copied: '링크 복사됨',
@@ -21,7 +21,7 @@ export const T = {
   },
   en: {
     search: 'search',
-    writtenBy: 'Written by Max Kim',
+    writtenBy: 'Written by Jonghyuk Max Kim',
     email: 'Send email',
     copy: 'Copy link',
     copied: 'Link copied',

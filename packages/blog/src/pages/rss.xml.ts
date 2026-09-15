@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
   const posts = await getPosts('ko');
   return rss({
     title: 'knowledge machine',
-    description: '읽고 본 것을 잃어버리지 않기 위한 파이프라인. 김맥스의 글 모음.',
+    description: '읽고 본 것을 잃어버리지 않기 위한 파이프라인. 김종혁의 글 모음.',
     site: context.site!,
     items: posts.map((post) => ({
       title: post.title,
