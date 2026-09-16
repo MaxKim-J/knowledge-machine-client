@@ -20,8 +20,20 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      # database 는 private 이라 GITHUB_TOKEN 으로 받지 못한다. 그 저장소에만 등록한
+      # 배포 키로 SSH 를 열고, 해당 저장소 주소만 SSH 로 바꿔 나머지 요청은 그대로 둔다.
+      - name: Set up database deploy key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DATABASE_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+          git config --global \
+            url."git@github.com:MaxKim-J/knowledge-machine-database.git".insteadOf \
+            "https://github.com/MaxKim-J/knowledge-machine-database.git"
+
+      - run: git submodule update --init --depth 1 database
 
       - uses: pnpm/action-setup@v4
 
