@@ -4,9 +4,10 @@
   "version": "0.0.1",
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0",
+    "pnpm": ">=10"
   },
-  "packageManager": "pnpm@8.7.1",
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
     "dev": "pnpm --filter blog dev",
     "build": "pnpm -r build",
@@ -27,5 +28,10 @@
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^1.0.0",
     "typescript-eslint": "^8.70.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

@@ -7,9 +7,9 @@
   },
   "scripts": {
     "sync:db": "node scripts/sync-database.mjs",
-    "prebuild": "pnpm run sync:db",
+    "prebuild": "node scripts/sync-database.mjs",
     "build": "astro build",
-    "predev": "pnpm run sync:db",
+    "predev": "node scripts/sync-database.mjs",
     "dev": "astro dev",
     "preview": "astro preview",
     "check": "astro check",
@@ -23,9 +23,6 @@
     "@astrojs/markdown-remark": "^7.3.1",
     "@astrojs/rss": "^4.0.19",
     "astro": "^7.3.2"
-  },
-  "allowScripts": {
-    "esbuild": true
   },
   "private": true,
   "devDependencies": {

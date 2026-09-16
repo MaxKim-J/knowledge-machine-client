@@ -11,94 +11,102 @@ const COPY = {
   ko: {
     title: '지식기계',
     lead: [
-      '읽는 속도가 쓰는 속도를 앞지르면 이해하지 못한 자료가 부채처럼 쌓입니다. 지식기계는 그 부채를 남겨두지 않으려고 만든 파이프라인입니다. 자료는 네 단계를 지나며 점점 정형화됩니다. 각 단계는 고정된 스키마와 그 단계에서만 허용되는 작업을 규정합니다.',
-      '저장소(knowledge-machine-database)는 옵시디언 vault이면서 코딩 에이전트의 작업장입니다. 이 블로그는 그 저장소를 읽어 정적 페이지로 빌드합니다.',
+      '읽는 일은 자료를 소비하는 일로 끝나기 쉽습니다. 며칠 뒤에는 어디에서 본 내용인지, 무엇을 이해했는지조차 흐려집니다. 지식기계는 읽은 것을 잊지 않기 위해 출처로 돌아가는 길과 이해를 확인하는 절차를 남기는 개인 지식 시스템입니다.',
+      '원본은 knowledge-machine-database에 둡니다. 옵시디언 vault에 자료와 기록을 쌓고, 코딩 에이전트가 정해진 규칙에 따라 파일과 문서 상태를 관리합니다. 이 블로그는 그중 발행된 글만 읽어 정적 페이지로 만듭니다.',
     ],
     stages: [
       {
-        name: 'resource',
-        desc: '유튜브 영상, 책, 아티클처럼 다시 찾아갈 수 있는 원재료.',
-        note: '복사해 보관하지 않고 주소와 접근 경로만 기록',
+        name: 'source',
+        desc: '링크, 영상, 책, 발췌, 대화 기록처럼 다시 확인할 수 있는 원재료.',
+        note: '원문을 복사하지 않고 출처와 접근 경로를 기록',
       },
       {
         name: 'reference',
-        desc: '원재료 하나를 요약과 인용, 질문과 메모로 정형화한 기록.',
-        note: '발행하지 않음 · 인용 검수를 통과해야 생성',
+        desc: 'Source 하나를 요약, 인용, 질문, Note로 정리한 재사용 문서.',
+        note: '이해를 확인하는 작업 공간 · 발행하지 않음',
       },
       {
         name: 'knowledge',
-        desc: '사실과 맥락을 중심으로 쓰고 의견은 약하게 담은 짧은 글.',
+        desc: '자료의 사실과 맥락을 짧게 설명하고 의견은 약하게 담은 글.',
         note: '발행 대상 · 미주로 출처 표기',
       },
       {
         name: 'article',
-        desc: '논증이 복잡하고 필자의 의견과 경험이 분명하게 드러나는 글.',
-        note: '발행 대상 · journal 분류 추가 사용',
+        desc: '여러 자료를 엮어 문제를 논증하고 경험과 의견을 담은 글.',
+        note: '발행 대상 · journal 분류를 추가로 사용',
       },
     ],
     sections: [
       {
-        heading: '읽음 처리',
-        body: '모든 reference는 읽지 않음 상태로 시작합니다. 질문과 답 또는 메모가 실제로 붙어야 읽음으로 바뀝니다. 요약만 있는 문서는 아직 읽지 않은 자료로 남습니다. 읽은 분량이 아니라 이해한 내용을 기준으로 삼으려고 두 상태를 나눕니다.',
+        heading: '왜 만드는가',
+        body: '많이 읽고도 생각이 남지 않는 이유는 기록이 없어서만이 아닙니다. 자료를 다시 찾을 경로, 이해한 내용, 아직 모르는 질문이 서로 떨어져 있기 때문입니다. 지식기계는 이 세 가지를 한 문서 구조 안에 묶습니다. 목적은 글을 많이 발행하는 데 있지 않습니다. 무엇을 읽었고 무엇을 이해했으며 어떤 글이 그 자료에서 나왔는지를 다시 확인할 수 있게 만드는 데 있습니다.',
       },
       {
-        heading: '에이전트의 경계',
-        body: '에이전트는 자료를 정형화하고 파일명과 스키마, 발행 상태를 관리합니다. 대신 원문에 없는 내용을 채우지 않고 제가 말하지 않은 생각을 메모로 만들지 않습니다. 판단은 사람이 하고 기계는 형식만 지킵니다. 이 경계가 무너지면 지식 대신 그럴듯한 문장만 쌓입니다.',
+        heading: '지식이 되는 조건',
+        body: '요약은 출발점일 뿐입니다. 모든 reference는 읽지 않음 상태로 시작하고, 질문과 답 또는 Note가 실제로 붙어야 읽음으로 바뀝니다. 읽은 분량보다 이해한 내용을 남기는 일을 우선합니다.',
       },
       {
-        heading: '발행 대상',
-        body: '블로그에는 knowledge와 article만 올라옵니다. 둘은 같은 대분류(tech · human · culture · business · investment)를 공유하고 article만 journal을 추가로 사용합니다. reference는 발행하지 않고 짧은 평과 함께 소셜 미디어로만 공유합니다.',
+        heading: '사람과 에이전트의 역할',
+        body: '사람이 자료를 선택하고, 읽고, 무엇을 이해했는지 판단합니다. 에이전트의 권한은 자료를 정형화하고 파일명, 스키마, 읽음과 발행 상태를 관리하는 데 있습니다. 원문에 없는 내용을 채우거나 표현하지 않은 생각을 메모로 만들지 않습니다.',
       },
       {
-        heading: '동기화',
-        body: '이 블로그는 저장소를 서브모듈로 읽습니다. 빌드할 때마다 최신 커밋을 가져와 페이지를 다시 만들고 글을 복사해 보관하지 않으므로 원본을 고치면 다음 빌드가 그대로 따라옵니다. 어떤 글이 올라갈지는 그 글의 frontmatter가 정합니다.',
+        heading: '발행은 마지막 단계',
+        body: 'reference는 이해를 다듬는 문서로 남고, knowledge와 article만 블로그에 올라옵니다. 두 글은 출처를 미주로 남기며, article은 여러 자료를 바탕으로 더 복잡한 주장과 경험을 담을 수 있습니다. 발행 여부는 각 문서의 frontmatter가 결정합니다.',
+      },
+      {
+        heading: '원본과 블로그',
+        body: 'knowledge-machine-database가 원본이고, 이 블로그는 그 원본을 읽어 만든 결과물입니다. 빌드할 때 저장소의 최신 내용을 반영해 페이지를 다시 만들며, 글을 별도로 복사해 두지 않습니다. 기록과 발행을 한곳에서 관리하기 위한 구조입니다.',
       },
     ],
   },
   en: {
     title: 'Knowledge Machine',
     lead: [
-      'When reading outpaces writing, material I never understood piles up. Knowledge Machine is a pipeline built so that debt does not accumulate. Material passes through four stages, growing more structured at each one, and every stage has a fixed schema and its own permitted operations.',
-      'The vault (knowledge-machine-database) is both an Obsidian workspace and a working directory for coding agents. This blog reads that repository and builds static pages from it.',
+      'Reading easily ends as consumption. A few days later, I may no longer know where an idea came from or what I actually understood. Knowledge Machine is a personal knowledge system that keeps a way back to the source and a procedure for checking understanding, so what I read does not simply disappear.',
+      'The source of truth is knowledge-machine-database. I keep material and notes in an Obsidian vault, while coding agents manage files and document states according to defined rules. This blog reads only what is published and builds static pages from it.',
     ],
     stages: [
       {
-        name: 'resource',
-        desc: 'Raw material I can reach again: videos, books, articles.',
-        note: 'never copied, only the address and the way back',
+        name: 'source',
+        desc: 'Material I can check again: links, videos, books, excerpts, and conversations.',
+        note: 'the source and way back, never a copied original',
       },
       {
         name: 'reference',
-        desc: 'One source turned into a summary, quotes, questions, and notes.',
-        note: 'not published · created only when its quotes pass review',
+        desc: 'One Source organized into a reusable document of summaries, quotes, questions, and notes.',
+        note: 'a space to test understanding · not published',
       },
       {
         name: 'knowledge',
-        desc: 'A short piece built on facts and context, with opinion kept light.',
+        desc: 'A short piece that explains a source’s facts and context, with opinion kept light.',
         note: 'published · sources linked in endnotes',
       },
       {
         name: 'article',
-        desc: 'A longer piece where the argument is complex and the opinion is mine.',
+        desc: 'A piece that connects sources to make a complex argument and include experience and opinion.',
         note: 'published · also uses the journal category',
       },
     ],
     sections: [
       {
-        heading: 'What counts as read',
-        body: 'Every reference starts unread. It only turns read once a question and answer or a note is actually attached. A document with nothing but a summary stays unread. The measure is what I understood, not what I got through.',
+        heading: 'Why build it',
+        body: 'Reading a lot without retaining a thought is not only a problem of missing notes. The path back to the material, what I understood, and the questions I still have often live apart. Knowledge Machine brings these three things into one document structure. Its purpose is not to publish more pieces, but to make it possible to trace what I read, what I understood, and which writing came from it.',
       },
       {
-        heading: 'What the agent does not do',
-        body: 'Agents structure the material and maintain filenames, schemas, and publication state. They never fill in what the source does not say, and never turn thoughts I did not express into notes. People judge; the machine only keeps the form. Once that line blurs, what accumulates is plausible prose rather than knowledge.',
+        heading: 'What makes knowledge',
+        body: 'A summary is only a starting point. Every reference starts unread and turns read only when a question and answer or a note is actually attached. The system favors leaving behind what I understood over counting what I finished.',
       },
       {
-        heading: 'What gets published',
-        body: 'Only knowledge and articles appear here. Both share the same top-level categories (tech · human · culture · business · investment), and only articles also use journal. References are never published, only shared on social media with a short note.',
+        heading: 'People and agents',
+        body: 'I choose and read the material, then decide what I understood. Agents structure the material and maintain filenames, schemas, read and publication states. They do not fill in what a source does not say or turn unexpressed thoughts into notes.',
       },
       {
-        heading: 'Syncing',
-        body: 'This blog reads the vault as a submodule. Every build pulls the latest commit and regenerates the pages. Nothing is copied and kept, so editing the original is enough for the next build to follow. Its own frontmatter decides whether a piece ships.',
+        heading: 'Publication comes last',
+        body: 'References stay as documents for working through understanding. Only knowledge and articles appear on the blog. Both keep their sources in endnotes, while articles can carry more complex claims and experience. Each document’s frontmatter decides whether it is published.',
+      },
+      {
+        heading: 'Source and blog',
+        body: 'knowledge-machine-database is the source of truth, and this blog is its rendered result. Each build reflects the repository’s latest contents without keeping a separate copy of the writing. The structure keeps recording and publishing in one place.',
       },
     ],
   },

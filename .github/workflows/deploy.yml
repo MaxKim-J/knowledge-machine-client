@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  # database 저장소가 글을 갱신하면 이 이벤트로 재빌드를 요청한다.
+  repository_dispatch:
+    types: [database-updated]
+  workflow_dispatch:
+
+# 배포는 한 번에 하나만 진행하고 앞선 실행은 취소한다.
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # prebuild 가 서브모듈을 원격 최신 커밋으로 올린 뒤 정적 페이지를 만든다.
+      - run: pnpm build
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy packages/blog/dist --project-name=knowledge-machine --branch=main
