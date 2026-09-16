@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { rehypeDatabaseAssets } from './rehype-database-assets.mjs';
+import { remarkDatabaseAssets } from './remark-database-assets.mjs';
 import { rehypeFootnotes } from './rehype-footnotes.mjs';
 
 const el = (tagName, properties = {}, children = []) => ({ type: 'element', tagName, properties, children });
@@ -13,6 +14,34 @@ const run = (plugin, tree, vfile) => {
   plugin()(tree, vfile);
   return tree;
 };
+
+describe('remarkDatabaseAssets', () => {
+  const md = (children) => ({ type: 'root', children });
+
+  it('마크다운 이미지의 상대 경로를 슬러그 아래로 옮긴다', () => {
+    const tree = md([{ type: 'paragraph', children: [{ type: 'image', url: 'images/foo/bar.png' }] }]);
+    run(remarkDatabaseAssets, tree, file('my-post'));
+    expect(tree.children[0].children[0].url).toBe('/images/my-post/foo/bar.png');
+  });
+
+  it('손으로 적은 HTML 안의 src 도 옮긴다', () => {
+    const tree = md([{ type: 'html', value: '<img src="images/foo/bar.png" />' }]);
+    run(remarkDatabaseAssets, tree, file('my-post'));
+    expect(tree.children[0].value).toContain('src="/images/my-post/foo/bar.png"');
+  });
+
+  it('외부 주소는 그대로 둔다', () => {
+    const tree = md([{ type: 'image', url: 'https://example.com/a.png' }]);
+    run(remarkDatabaseAssets, tree, file('my-post'));
+    expect(tree.children[0].url).toBe('https://example.com/a.png');
+  });
+
+  it('슬러그가 없으면 아무것도 바꾸지 않는다', () => {
+    const tree = md([{ type: 'image', url: 'images/foo/bar.png' }]);
+    run(remarkDatabaseAssets, tree, { data: {} });
+    expect(tree.children[0].url).toBe('images/foo/bar.png');
+  });
+});
 
 describe('rehypeDatabaseAssets', () => {
   it('마크다운 이미지의 상대 경로를 슬러그 아래로 옮긴다', () => {
