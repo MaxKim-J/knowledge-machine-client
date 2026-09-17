@@ -46,8 +46,18 @@ function cardOf(data) {
   };
 }
 
-/** 내용이 그대로면 다시 굽지 않는다. 글이 많아 매 빌드마다 전부 그리면 느리다. */
-const stamp = (card) => crypto.createHash('sha1').update(JSON.stringify(card)).digest('hex').slice(0, 12);
+/**
+ * 내용이 그대로면 다시 굽지 않는다. 글이 많아 매 빌드마다 전부 그리면 느리다.
+ * 조판을 바꿔도 다시 굽도록 렌더러 원본까지 해시에 넣는다.
+ */
+const layoutStamp = crypto
+  .createHash('sha1')
+  .update(fs.readFileSync(path.join(here, 'lib', 'card.mjs')))
+  .digest('hex')
+  .slice(0, 12);
+
+const stamp = (card) =>
+  crypto.createHash('sha1').update(layoutStamp).update(JSON.stringify(card)).digest('hex').slice(0, 12);
 
 async function write(name, card, cache) {
   const target = path.join(outDir, `${name}.png`);

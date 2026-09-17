@@ -28,10 +28,10 @@ const fonts = [
 
 /** 제목이 길수록 글자를 줄여 세 줄을 넘지 않게 한다. */
 function titleSize(title) {
-  if (title.length <= 14) return 150;
-  if (title.length <= 24) return 126;
-  if (title.length <= 36) return 104;
-  return 86;
+  if (title.length <= 14) return 132;
+  if (title.length <= 24) return 112;
+  if (title.length <= 36) return 92;
+  return 78;
 }
 
 const text = (content, style) => ({ type: 'div', props: { style, children: content } });
@@ -75,7 +75,7 @@ function layout({ label, title, summary, byline }) {
                 display: 'flex',
               }),
               text(summary, {
-                fontSize: 46,
+                fontSize: 40,
                 fontWeight: 700,
                 lineHeight: 1.58,
                 letterSpacing: '-0.015em',
