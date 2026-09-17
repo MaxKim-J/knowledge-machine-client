@@ -24,6 +24,7 @@ export default [
         Event: 'readonly',
         console: 'readonly',
         process: 'readonly',
+        Buffer: 'readonly',
       },
     },
     rules: { '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }] },

@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # sync-database 가 database 서브모듈에서 생성한다
 packages/blog/public/images/
+
+# generate-cards 가 database 내용으로 만든다
+packages/blog/public/og/

@@ -20,7 +20,7 @@ interface Props {
 const { lang, title, description, altPath, active, ogImage, ogType = 'website', publishedAt } = Astro.props;
 const other: Lang = lang === 'ko' ? 'en' : 'ko';
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const DEFAULT_OG = '/default-thumbnail.png';
+const DEFAULT_OG = '/og/default.png';
 const image = new URL(ogImage ?? DEFAULT_OG, Astro.site);
 // 크기는 기본 이미지에만 밝힌다. 글별 썸네일은 원본 크기를 알지 못한다.
 const knownSize = (ogImage ?? DEFAULT_OG) === DEFAULT_OG;

@@ -48,30 +48,21 @@ function toPost(entry: Entry, kind: Kind, lang: Lang): Post {
   };
 }
 
-export const DEFAULT_THUMBNAIL = '/default-thumbnail.png';
-
-const IMAGE = /!\[[^\]]*\]\(([^)\s]+)[^)]*\)|<img[^>]+src=["']([^"']+)["']/;
+export const DEFAULT_THUMBNAIL = '/og/default.png';
 
 /**
- * 공유 카드 이미지를 정한다. frontmatter 의 thumbnail 이 있으면 그것을 사용하고
- * 없으면 본문 첫 이미지를, 그것도 없으면 기본 이미지를 사용한다.
+ * 공유 카드 이미지를 정한다. frontmatter 의 thumbnail 로 직접 지정하면 그것을 쓰고
+ * 없으면 generate-cards 가 제목과 요약으로 구워 둔 카드를 쓴다.
  *
- * 원문은 이미지를 `images/...` 상대 경로로 참조하고 sync-database 가 파일을
- * public/images/{slug}/ 로 옮기므로 같은 규칙으로 경로를 바꾼다.
+ * 본문 첫 이미지는 쓰지 않는다. 코드 스크린샷이나 핫링크가 막히는 외부 주소가 많아
+ * 공유 카드로는 글을 알려주지 못한다.
  */
 function thumbnailOf(entry: Entry): string {
-  const toSitePath = (value: string) => {
-    if (/^https?:\/\//.test(value)) return value;
-    const relative = value.replace(/^\.?\//, '');
-    return relative.startsWith('images/')
-      ? `/images/${entry.data.slug}/${relative.slice('images/'.length)}`
-      : `/${relative}`;
-  };
-
-  if (entry.data.thumbnail) return toSitePath(entry.data.thumbnail);
-  const found = entry.body?.match(IMAGE);
-  const source = found?.[1] ?? found?.[2];
-  return source ? toSitePath(source) : DEFAULT_THUMBNAIL;
+  const { thumbnail, slug, lang } = entry.data;
+  if (!thumbnail) return `/og/${lang === 'en' ? 'en-' : ''}${slug}.png`;
+  if (/^https?:\/\//.test(thumbnail)) return thumbnail;
+  const relative = thumbnail.replace(/^\.?\//, '');
+  return relative.startsWith('images/') ? `/images/${slug}/${relative.slice('images/'.length)}` : `/${relative}`;
 }
 
 const byDateDesc = (a: Post, b: Post) => b.date.getTime() - a.date.getTime();

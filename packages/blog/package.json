@@ -7,9 +7,9 @@
   },
   "scripts": {
     "sync:db": "node scripts/sync-database.mjs",
-    "prebuild": "node scripts/sync-database.mjs",
+    "prebuild": "node scripts/sync-database.mjs && node scripts/generate-cards.mjs",
     "build": "astro build",
-    "predev": "node scripts/sync-database.mjs",
+    "predev": "node scripts/sync-database.mjs && node scripts/generate-cards.mjs",
     "dev": "astro dev",
     "preview": "astro preview",
     "check": "astro check",
@@ -17,7 +17,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "cards": "node scripts/generate-cards.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
@@ -28,8 +29,11 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.4",
+    "@resvg/resvg-js": "^2.6.2",
+    "satori": "^0.33.4",
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.1",
+    "yaml": "^2.9.1"
   }
 }
