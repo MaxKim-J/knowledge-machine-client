@@ -44,6 +44,15 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # 지난 실행이 구워 둔 공유 카드를 되살린다. generate-cards 는 내용이 그대로인
+      # 카드를 다시 그리지 않으므로 새 글과 고친 글만 그린다. 조판을 바꾸면 키가
+      # 달라져 전부 다시 그린다.
+      - uses: actions/cache@v4
+        with:
+          path: packages/blog/public/og
+          key: cards-${{ hashFiles('packages/blog/scripts/lib/card.mjs') }}-${{ github.sha }}
+          restore-keys: cards-${{ hashFiles('packages/blog/scripts/lib/card.mjs') }}-
+
       # prebuild 가 서브모듈을 원격 최신 커밋으로 올린 뒤 정적 페이지를 만든다.
       - run: pnpm build
 
