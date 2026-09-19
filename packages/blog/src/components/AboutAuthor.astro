@@ -11,18 +11,20 @@ const COPY = {
   ko: {
     title: '김종혁',
     paragraphs: [
-      'Product Engineer. flex팀에서 웹 플랫폼과 개발 경험을 만듭니다. 소프트웨어 엔지니어링으로 수 년째 생계를 꾸리고 있습니다.',
-      '복잡한 문제를 삶이나 사회, 공학의 영역에서 잘 다루는 것에 관심이 많습니다. 공동체에 대해 자주 생각하고 약자가 죽지 않아도 되는 세상을 원합니다. 영문학을 전공했습니다.',
-      '읽고 걷고 달립니다. 잘못된 내용을 발견하면 알려주세요.',
+      '복잡한 문제를 삶이나 사회, 공학의 영역에서 잘 다루는 것에 관심이 많습니다. 공동체에 대해 자주 생각하고 약자가 죽지 않아도 되는 세상을 원합니다.',
+      '세상과 세상 속 사람들을 조금이라도 더 이해하려는 태도를 가지는 것 만이 필연적으로 작고 좁은 삶을 진보시키며 세계에 흔적을 남기는 유일한 방법이라고 생각합니다.',
+      '대체하거나 모방할 수 없는 경험과 성과를 만들어 가지려 합니다. 비장해지기 쉽고 위험한 이 과정을 안전하고 수월하게, 더 도전적으로는 즐겁게 만드는데 관심이 많습니다.',
+      '대학에서 영문학을 전공하고 소프트웨어 엔지니어링으로 수 년째 생계를 꾸리고 있습니다. 앞으로는 어떻게 될지 모르겠습니다. 적성이나 천직 같은건 없고 그게 무엇이든 될 수 있다고 생각합니다.',
     ],
     feed: '전체 글 피드',
   },
   en: {
     title: 'Jonghyuk Max Kim',
     paragraphs: [
-      'Product engineer. I build the web platform and developer experience on the flex team, and have earned my living through software engineering for several years.',
-      'I care about handling complex problems well, in life and society as much as in engineering. I think about community often and want a world where the vulnerable do not have to die. I majored in English literature.',
-      'I read, walk, and run. Tell me when something here is wrong.',
+      'I am interested in handling complex problems well, whether in life, society, or engineering. I think often about community, and I want a world where people in vulnerable positions do not have to die.',
+      'I think that the only way to move an inevitably small and narrow life forward, and leave a mark on the world, is to cultivate an attitude of trying to understand the world and the people in it, even a little better.',
+      'I want to create experiences and accomplishments that cannot be replaced or imitated. I care about making this process, which can easily become solemn and dangerous, safer and easier, or, more ambitiously, enjoyable.',
+      'I majored in English literature at university and have made my living through software engineering for several years. I do not know what the future holds. I do not think there is such a thing as a fixed aptitude or calling, and I believe I can become anything.',
     ],
     feed: 'Full feed',
   },
@@ -31,7 +33,7 @@ const COPY = {
 const copy = COPY[lang];
 
 const links = [
-  { label: 'github', text: 'github.com/MaxKim-J', url: 'https://github.com/MaxKim-J' },
+  { label: 'work at', text: 'Product Engineer · flex.team', url: 'https://flex.team' },
   { label: 'x', text: '@max_kim_dev', url: 'https://x.com/max_kim_dev' },
   {
     label: 'linkedin',
@@ -39,10 +41,15 @@ const links = [
     url: 'https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/',
   },
   { label: 'resume', text: 'github.com/MaxKim-J/RESUME', url: 'https://github.com/MaxKim-J/RESUME' },
-  { label: 'email', text: 'hwaseen@gmail.com', url: 'mailto:hwaseen@gmail.com' },
+  { label: 'email', text: 'mmaxjkim@gmail.com', url: undefined },
   { label: 'rss', text: copy.feed, url: '/rss.xml' },
 ];
 ---
+
+<!-- 목록 페이지의 탭 줄이 차지하는 높이만큼 비워 본문 시작 위치를 맞춘다. -->
+<div class="band bar" style="margin-bottom:7px" aria-hidden="true">
+  <div style="height:6.9px"></div>
+</div>
 
 <main class="band">
   <h1 class="atitle">{copy.title}</h1>
@@ -54,7 +61,7 @@ const links = [
     {links.map((link) => (
       <div class="deflist" style="padding:0 0 10px;font-size:13.5px">
         <span style="color:var(--dim)">{link.label}</span>
-        <a href={link.url}>{link.text}</a>
+        {link.url ? <a href={link.url}>{link.text}</a> : <span>{link.text}</span>}
       </div>
     ))}
   </div>
