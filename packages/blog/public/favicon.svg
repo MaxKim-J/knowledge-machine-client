@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="256" height="256">
-  <circle cx="6.8" cy="8.6" r="6.2" fill="#000000"></circle>
-  <circle cx="11.2" cy="4.2" r="4.6" fill="#FFFFFF"></circle>
+  <mask id="logo-cutout" maskUnits="userSpaceOnUse">
+    <rect width="16" height="16" fill="#000000"></rect>
+    <circle cx="6.8" cy="8.6" r="6.2" fill="#FFFFFF"></circle>
+    <circle cx="11.2" cy="4.2" r="4.6" fill="#000000"></circle>
+  </mask>
+  <rect width="16" height="16" fill="#000000" mask="url(#logo-cutout)"></rect>
   <rect x="9.9" y="2.3" width="3.2" height="3.2" fill="#000000"></rect>
 </svg>
