@@ -20,7 +20,7 @@ const categories = categoriesFor(kind);
 ---
 
 <div class="band bar">
-  <div style="display:flex;flex-direction:column;gap:9px">
+  <div class="list-controls" style="display:flex;flex-direction:column;gap:9px">
     <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:18px;font-size:13.5px;line-height:1.4">
       {tabs.map((tab) => (
         <a class="swap" href={tab.href} style="display:inline-flex;align-items:baseline;gap:5px">
@@ -96,10 +96,15 @@ const categories = categoriesFor(kind);
         data-text={`${post.title} ${post.summary} ${post.tags.join(' ')} ${post.category}`.toLowerCase()}
         style="display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:center;padding:10px 8px;margin:0 -8px;border-radius:4px;text-decoration:none;color:inherit"
       >
-        <span style="display:flex;flex-direction:column;gap:4px">
-          <span style="font-weight:500;font-size:16.5px;line-height:1.5;letter-spacing:-0.01em">{post.title}</span>
+        <span class="row-title-wrap" style="display:flex;flex-direction:column;gap:4px">
+          <span class="row-title" style="font-weight:500;font-size:16.5px;line-height:1.5;letter-spacing:-0.01em">
+            {post.title}
+          </span>
         </span>
-        <span style="font-size:12px;color:var(--ink);white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums">
+        <span
+          class="row-meta"
+          style="font-size:12px;color:var(--ink);white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums"
+        >
           {post.meta}
         </span>
       </a>
@@ -123,7 +128,23 @@ const categories = categoriesFor(kind);
   }
   @media (max-width: 600px) {
     #q {
-      width: 100% !important;
+      width: 30% !important;
+      min-width: 84px;
+    }
+    #cats {
+      margin-top: 5px;
+    }
+    .row {
+      display: flex !important;
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 3px;
+      padding: 8px !important;
+    }
+    .row-meta {
+      color: var(--dim) !important;
+      font-size: 11px !important;
+      text-align: left !important;
     }
   }
 </style>
