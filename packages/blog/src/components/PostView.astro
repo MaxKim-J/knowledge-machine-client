@@ -30,7 +30,7 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
       {post.kind} &gt; {post.category}
     </p>
     <h1 class="ptitle">{post.title}</h1>
-    <p style="font-weight:350;font-size:15.5px;line-height:1.7;color:var(--muted);margin:0 0 14px">{post.summary}</p>
+    <p style="font-weight:400;font-size:15.5px;line-height:1.7;color:var(--muted);margin:0 0 14px">{post.summary}</p>
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-size:12.5px;color:var(--dim);margin:0 0 40px">
       <span style="font-variant-numeric:tabular-nums">{post.meta}</span>
       {post.tags.map((tag) => (
@@ -48,7 +48,7 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;padding:0 0 12px">
         <span style="color:var(--muted)">{t.writtenBy}</span>
         <span style="display:flex;gap:14px">
-          <a class="quiet" href="mailto:hwaseen@gmail.com">
+          <a class="quiet" href="mailto:mmaxjkim@gmail.com">
             {t.email}
           </a>
           <a class="quiet" id="copy-link" href="#" data-copy={t.copy} data-copied={t.copied}>
@@ -103,7 +103,7 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
                 href={item.href}
                 style="display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:center;padding:5px 8px;margin:0 -8px;border-radius:4px;text-decoration:none;color:inherit"
               >
-                <span style="font-weight:450;font-size:15.5px;line-height:1.5;letter-spacing:-0.01em">
+                <span style="font-weight:500;font-size:15.5px;line-height:1.5;letter-spacing:-0.01em">
                   {item.title}
                 </span>
                 <span style="font-size:12px;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums">
@@ -125,7 +125,7 @@ const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
     font-size: 27px;
     line-height: 1.45;
     letter-spacing: -0.025em;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
   }
   .quiet {
     color: var(--dim);

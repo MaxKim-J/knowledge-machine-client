@@ -27,11 +27,18 @@ const fonts = [
 ];
 
 /** 제목이 길수록 글자를 줄여 세 줄을 넘지 않게 한다. */
-function titleSize(title) {
-  if (title.length <= 14) return 132;
+function titleSize(title, summary) {
+  if (title.length <= 14) return summary.length > 90 ? 112 : 132;
   if (title.length <= 24) return 112;
   if (title.length <= 36) return 92;
   return 78;
+}
+
+/** 설명이 길어도 하단의 작성자 표기가 카드 밖으로 밀리지 않게 한다. */
+function summarySize(summary) {
+  if (summary.length <= 90) return 40;
+  if (summary.length <= 140) return 34;
+  return 30;
 }
 
 const text = (content, style) => ({ type: 'div', props: { style, children: content } });
@@ -66,7 +73,7 @@ function layout({ label, title, summary, byline }) {
                 display: 'flex',
               }),
               text(title, {
-                fontSize: titleSize(title),
+                fontSize: titleSize(title, summary),
                 fontWeight: 800,
                 lineHeight: 1.24,
                 letterSpacing: '-0.035em',
@@ -75,9 +82,9 @@ function layout({ label, title, summary, byline }) {
                 display: 'flex',
               }),
               text(summary, {
-                fontSize: 40,
+                fontSize: summarySize(summary),
                 fontWeight: 700,
-                lineHeight: 1.58,
+                lineHeight: 1.4,
                 letterSpacing: '-0.015em',
                 maxWidth: '94%',
                 color: '#2E2E2E',

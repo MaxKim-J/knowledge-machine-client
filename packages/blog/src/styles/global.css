@@ -26,7 +26,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-weight: 350;
+  font-weight: 400;
   font-size: 16.5px;
   line-height: 1.8;
   text-wrap: pretty;

@@ -21,6 +21,37 @@ const DEFAULT_CARD = {
   byline: 'jonghyuk.kim',
 };
 
+const STATIC_CARDS = {
+  about: {
+    label: 'about',
+    title: '지식기계',
+    summary:
+      '지식기계는 개인 지식 시스템이자 Ontology로, AI를 통해 인간의 지식 처리 속도를 높이고 지식을 효과적으로 증강할 수 있는 방법을 가정하고 실행합니다.',
+    byline: 'Written by 김종혁',
+  },
+  'en-about': {
+    label: 'about',
+    title: 'Knowledge Machine',
+    summary:
+      'Knowledge Machine is a personal knowledge system and an ontology that explores and puts into practice ways to accelerate human knowledge processing and augment human knowledge through AI.',
+    byline: 'Written by Jonghyuk Max Kim',
+  },
+  author: {
+    label: 'author',
+    title: '김종혁',
+    summary:
+      '복잡한 문제를 잘 다루고 싶어하는 사람. 세상을 더 이해하고 싶은 사람. 모방할 수 없는 경험을 가지고 싶은 사람. 앞으로 어떻게 될지 모르겠는 사람. 플렉스팀의 Product Engineer.',
+    byline: 'Written by 김종혁',
+  },
+  'en-author': {
+    label: 'author',
+    title: 'Jonghyuk Max Kim',
+    summary:
+      'A person who wants to handle complex problems well. A person who wants to understand the world better. A person who wants experiences that cannot be imitated. A person who does not know what the future holds. A Product Engineer at flex.team.',
+    byline: 'Written by Jonghyuk Max Kim',
+  },
+};
+
 /**
  * frontmatter 만 읽는다. 값에 이스케이프한 따옴표가 들어가는 제목이 있어
  * 정규식으로 가르지 않고 YAML 로 파싱한다.
@@ -75,10 +106,15 @@ async function main() {
 
   let drawn = 0;
   let kept = 0;
-  const seen = new Set(['default']);
+  const seen = new Set(['default', ...Object.keys(STATIC_CARDS)]);
 
   if (await write('default', DEFAULT_CARD, cache)) drawn += 1;
   else kept += 1;
+
+  for (const [name, card] of Object.entries(STATIC_CARDS)) {
+    if (await write(name, card, cache)) drawn += 1;
+    else kept += 1;
+  }
 
   for (const kind of ['articles', 'knowledges']) {
     const kindDir = path.join(dbRoot, kind);
