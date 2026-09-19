@@ -13,17 +13,34 @@ const outDir = path.join(blogRoot, 'public', 'og');
 
 const BYLINE = { ko: 'Written by 김종혁', en: 'Written by Jonghyuk Max Kim' };
 
+const DEFAULT_CARDS = {
+  default: {
+    label: 'about',
+    title: '김맥스의 지식기계',
+    summary:
+      '지식기계는 김종혁의 개인 지식 시스템이자 Ontology로 AI를 통해 지식 처리 속도를 높이고 지식을 효과적으로 증강할 수 있게 합니다.',
+    byline: 'Written by 김종혁',
+  },
+  'en-default': {
+    label: 'about',
+    title: "Max Kim's Knowledge Machine",
+    summary:
+      "Knowledge Machine is Max Kim's personal knowledge system and an ontology that uses AI to speed up knowledge processing and effectively augment knowledge.",
+    byline: 'Written by Jonghyuk Max Kim',
+  },
+};
+
 const STATIC_CARDS = {
   about: {
     label: 'about',
-    title: '지식기계',
+    title: '지식기계에 대하여',
     summary:
-      '지식기계는 개인 지식 시스템이자 Ontology로, AI를 통해 인간의 지식 처리 속도를 높이고 지식을 효과적으로 증강할 수 있는 방법을 가정하고 실행합니다.',
+      '지식기계는 개인 지식 시스템이자 Ontology로 AI를 통해 지식 처리 속도를 높이고 지식을 효과적으로 증강할 수 있게 합니다.',
     byline: 'Written by 김종혁',
   },
   'en-about': {
     label: 'about',
-    title: 'Knowledge Machine',
+    title: 'About Knowledge Machine',
     summary:
       'Knowledge Machine is a personal knowledge system and an ontology that explores and puts into practice ways to accelerate human knowledge processing and augment human knowledge through AI.',
     byline: 'Written by Jonghyuk Max Kim',
@@ -43,9 +60,6 @@ const STATIC_CARDS = {
     byline: 'Written by Jonghyuk Max Kim',
   },
 };
-
-// 메인 페이지의 기본 카드는 지식기계 소개 카드와 같은 내용을 사용한다.
-const DEFAULT_CARD = STATIC_CARDS.about;
 
 /**
  * frontmatter 만 읽는다. 값에 이스케이프한 따옴표가 들어가는 제목이 있어
@@ -101,10 +115,12 @@ async function main() {
 
   let drawn = 0;
   let kept = 0;
-  const seen = new Set(['default', ...Object.keys(STATIC_CARDS)]);
+  const seen = new Set([...Object.keys(DEFAULT_CARDS), ...Object.keys(STATIC_CARDS)]);
 
-  if (await write('default', DEFAULT_CARD, cache)) drawn += 1;
-  else kept += 1;
+  for (const [name, card] of Object.entries(DEFAULT_CARDS)) {
+    if (await write(name, card, cache)) drawn += 1;
+    else kept += 1;
+  }
 
   for (const [name, card] of Object.entries(STATIC_CARDS)) {
     if (await write(name, card, cache)) drawn += 1;

@@ -7,7 +7,14 @@ const lang = 'ko' as const;
 const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), getPosts(lang, 'knowledge')]);
 ---
 
-<Base lang={lang} title="knowledge machine" description="김맥스의 지식기계 글 모음" altPath="/en">
+<Base
+  lang={lang}
+  title="김맥스의 지식기계"
+  description="지식기계는 김종혁의 개인 지식 시스템이자 Ontology로 AI를 통해 지식 처리 속도를 높이고 지식을 효과적으로 증강할 수 있게 합니다."
+  ogImage="/og/default.png"
+  ogImageAlt="김맥스의 지식기계"
+  altPath="/en"
+>
   <PostList
     lang={lang}
     kind="article"
