@@ -13,14 +13,6 @@ const outDir = path.join(blogRoot, 'public', 'og');
 
 const BYLINE = { ko: 'Written by 김종혁', en: 'Written by Jonghyuk Max Kim' };
 
-const DEFAULT_CARD = {
-  label: 'knowledge machine',
-  title: '지식기계',
-  summary:
-    '읽는 속도가 쓰는 속도를 앞지르면 이해하지 못한 자료가 부채처럼 쌓입니다. 그 부채를 남겨두지 않으려고 만든 파이프라인입니다.',
-  byline: 'jonghyuk.kim',
-};
-
 const STATIC_CARDS = {
   about: {
     label: 'about',
@@ -51,6 +43,9 @@ const STATIC_CARDS = {
     byline: 'Written by Jonghyuk Max Kim',
   },
 };
+
+// 메인 페이지의 기본 카드는 지식기계 소개 카드와 같은 내용을 사용한다.
+const DEFAULT_CARD = STATIC_CARDS.about;
 
 /**
  * frontmatter 만 읽는다. 값에 이스케이프한 따옴표가 들어가는 제목이 있어

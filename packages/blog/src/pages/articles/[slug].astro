@@ -23,7 +23,7 @@ const { post, prev, next, related } = Astro.props;
 
 <Base
   lang={lang}
-  title={`${post.title} · knowledge machine`}
+  title={post.title}
   description={post.summary}
   ogImage={post.thumbnail}
   ogType="article"
