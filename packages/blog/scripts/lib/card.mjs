@@ -36,9 +36,9 @@ function titleSize(title, summary) {
 
 /** 설명이 길어도 하단의 작성자 표기가 카드 밖으로 밀리지 않게 한다. */
 function summarySize(summary) {
-  if (summary.length <= 90) return 47;
-  if (summary.length <= 140) return 41;
-  return 37;
+  if (summary.length <= 90) return 51;
+  if (summary.length <= 140) return 45;
+  return 41;
 }
 
 const text = (content, style) => ({ type: 'div', props: { style, children: content } });

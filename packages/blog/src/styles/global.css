@@ -166,6 +166,13 @@ main.band {
   color: var(--dim);
 }
 
+@media (max-width: 700px) {
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 @media (max-width: 600px) {
   body {
     font-size: 16px;
