@@ -91,9 +91,9 @@
     gap: 10px;
     margin-bottom: 9px;
     font-family: var(--sans);
-    font-size: 12px;
+    font-size: 13.5px;
     line-height: 1.4;
-    color: var(--dim);
+    color: var(--muted);
   }
 
   .prose .mermaid-viewer[data-ready='true'] .mermaid-toolbar,
@@ -104,7 +104,7 @@
   .prose .mermaid-viewer[data-view='diagram'] .mermaid-mode-diagram,
   .prose .mermaid-viewer[data-view='code'] .mermaid-mode-code {
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .prose .mermaid-switch {
@@ -122,32 +122,35 @@
   .prose .mermaid-switch-track {
     display: inline-flex;
     align-items: center;
-    width: 34px;
-    height: 19px;
+    width: 36px;
+    height: 20px;
     padding: 2px;
-    border: 1px solid var(--dim);
+    border: 1px solid transparent;
     border-radius: 999px;
-    background: var(--surface);
+    border-color: #d0d0d0;
+    background: #d0d0d0;
     transition: background-color 120ms ease;
   }
 
   .prose .mermaid-switch-thumb {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: var(--dim);
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
     transition:
       transform 120ms ease,
       background-color 120ms ease;
   }
 
   .prose .mermaid-switch input:checked + .mermaid-switch-track {
+    border-color: var(--ink);
     background: var(--ink);
   }
 
   .prose .mermaid-switch input:checked + .mermaid-switch-track .mermaid-switch-thumb {
-    transform: translateX(15px);
-    background: var(--bg);
+    transform: translateX(16px);
+    background: #ffffff;
   }
 
   .prose .mermaid-switch input:focus-visible + .mermaid-switch-track {
