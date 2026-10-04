@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/posts';
+
+const lang = 'ko' as const;
+const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), getPosts(lang, 'knowledge')]);
+---
+
+<Base lang={lang} title="article" description="경험과 의견을 담아 길게 쓴 글 모음." altPath="/en/articles">
+  <PostList
+    lang={lang}
+    kind="article"
+    posts={articles}
+    counts={{ all: articles.length + knowledges.length, article: articles.length, knowledge: knowledges.length }}
+  />
+</Base>

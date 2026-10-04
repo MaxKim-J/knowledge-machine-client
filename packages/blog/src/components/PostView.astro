@@ -15,7 +15,7 @@ interface Props {
 const { lang, post, prev, next, related } = Astro.props;
 const t = T[lang];
 const { Content } = await render(post.entry);
-const listHref = withLang(post.kind === 'article' ? '/' : '/knowledges', lang);
+const listHref = withLang(post.kind === 'article' ? '/articles' : '/knowledges', lang);
 const tagHref = (tag: string) => `${listHref}?tag=${encodeURIComponent(tag)}`;
 ---
 

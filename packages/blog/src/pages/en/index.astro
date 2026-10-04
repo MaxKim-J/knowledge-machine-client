@@ -4,7 +4,11 @@ import PostList from '../../components/PostList.astro';
 import { getPosts } from '../../lib/posts';
 
 const lang = 'en' as const;
-const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), getPosts(lang, 'knowledge')]);
+const [posts, articles, knowledges] = await Promise.all([
+  getPosts(lang),
+  getPosts(lang, 'article'),
+  getPosts(lang, 'knowledge'),
+]);
 ---
 
 <Base
@@ -17,8 +21,8 @@ const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), get
 >
   <PostList
     lang={lang}
-    kind="article"
-    posts={articles}
+    kind="all"
+    posts={posts}
     counts={{ all: articles.length + knowledges.length, article: articles.length, knowledge: knowledges.length }}
   />
 </Base>
