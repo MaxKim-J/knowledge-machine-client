@@ -401,8 +401,9 @@
     const english = document.documentElement.lang.toLowerCase().startsWith('en');
     const fences = Array.from(
       document.querySelectorAll<HTMLPreElement>('pre[data-language="mermaid"], pre:has(code.language-mermaid)'),
-    ).filter((pre) => !pre.closest('.mermaid-viewer'));
+    ).filter((pre) => !pre.closest('.mermaid-viewer') && !pre.dataset.mermaidProcessing);
     if (!fences.length) return;
+    for (const pre of fences) pre.dataset.mermaidProcessing = 'true';
 
     try {
       mermaidPromise ??= import('mermaid');
