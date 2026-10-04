@@ -1,0 +1,116 @@
+.prose .mermaid-viewer {
+  margin: 32px 0 30px;
+}
+
+.prose .mermaid-toolbar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.prose .mermaid-viewer[data-ready='true'] .mermaid-toolbar,
+.prose .mermaid-viewer[data-error='true'] .mermaid-toolbar {
+  display: flex;
+}
+
+.prose .mermaid-viewer[data-view='diagram'] .mermaid-mode-diagram,
+.prose .mermaid-viewer[data-view='code'] .mermaid-mode-code {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.prose .mermaid-switch {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.prose .mermaid-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.prose .mermaid-switch-track {
+  display: inline-flex;
+  align-items: center;
+  width: 36px;
+  height: 20px;
+  padding: 2px;
+  border: 1px solid #d0d0d0;
+  border-radius: 999px;
+  background: #d0d0d0;
+  transition: background-color 120ms ease;
+}
+
+.prose .mermaid-switch-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 120ms ease,
+    background-color 120ms ease;
+}
+
+.prose .mermaid-switch input:checked + .mermaid-switch-track {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.prose .mermaid-switch input:checked + .mermaid-switch-track .mermaid-switch-thumb {
+  transform: translateX(16px);
+  background: #ffffff;
+}
+
+.prose .mermaid-switch input:focus-visible + .mermaid-switch-track {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.prose .mermaid-viewer[data-error='true'] .mermaid-switch,
+.prose .mermaid-viewer[data-error='true'] .mermaid-mode {
+  display: none;
+}
+
+.prose .mermaid-error {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.prose .mermaid-output {
+  display: none;
+  overflow-x: auto;
+  padding: 14px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.prose .mermaid-output svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.prose .mermaid-viewer[data-ready='true'][data-view='diagram'] .mermaid-output {
+  display: block;
+}
+
+.prose .mermaid-viewer[data-ready='true'][data-view='diagram'] > pre {
+  display: none;
+}
+
+.prose .mermaid-viewer[data-ready='true'][data-view='code'] .mermaid-output {
+  display: none;
+}
+
+.prose .mermaid-viewer > pre {
+  margin: 0;
+}
