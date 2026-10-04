@@ -1,18 +1,19 @@
 ---
 import { T, withLang, type Lang } from '../lib/i18n';
-import { categoriesFor, type Kind, type Post } from '../lib/posts';
+import { categoriesFor, type ListKind, type Post } from '../lib/posts';
 
 interface Props {
   lang: Lang;
-  kind: Kind;
+  kind: ListKind;
   posts: Post[];
-  counts: Record<Kind, number>;
+  counts: Record<ListKind, number>;
 }
 
 const { lang, kind, posts, counts } = Astro.props;
 const t = T[lang];
 
-const tabs: { key: Kind; label: string; href: string }[] = [
+const tabs: { key: ListKind; label: string; href: string }[] = [
+  { key: 'all', label: 'all', href: withLang('/all', lang) },
   { key: 'article', label: 'article', href: withLang('/', lang) },
   { key: 'knowledge', label: 'knowledge', href: withLang('/knowledges', lang) },
 ];

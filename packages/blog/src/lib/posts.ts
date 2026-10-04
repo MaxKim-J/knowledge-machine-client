@@ -5,6 +5,7 @@ type Entry = CollectionEntry<'articles'> | CollectionEntry<'knowledges'>;
 import { type Lang, formatDate, withLang } from './i18n';
 
 export type Kind = 'article' | 'knowledge';
+export type ListKind = Kind | 'all';
 
 export type Post = {
   id: string;
@@ -164,6 +165,6 @@ export function relatedPosts(current: Post, all: Post[], limit = 3): Post[] {
 /** article 만 journal 을 추가로 사용한다. */
 export const ALL_CATEGORIES = ['tech', 'human', 'culture', 'business', 'investment'];
 
-export function categoriesFor(kind: Kind): string[] {
-  return kind === 'article' ? [...ALL_CATEGORIES, 'journal'] : ALL_CATEGORIES;
+export function categoriesFor(kind: ListKind): string[] {
+  return kind === 'knowledge' ? ALL_CATEGORIES : [...ALL_CATEGORIES, 'journal'];
 }

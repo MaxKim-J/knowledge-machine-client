@@ -19,6 +19,6 @@ const [articles, knowledges] = await Promise.all([getPosts(lang, 'article'), get
     lang={lang}
     kind="article"
     posts={articles}
-    counts={{ article: articles.length, knowledge: knowledges.length }}
+    counts={{ all: articles.length + knowledges.length, article: articles.length, knowledge: knowledges.length }}
   />
 </Base>

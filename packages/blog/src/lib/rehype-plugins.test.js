@@ -90,6 +90,19 @@ const findByClass = (node, name) => {
 };
 
 describe('rehypeFootnotes', () => {
+  it('localized Notes headings keep the divider above the heading', () => {
+    for (const heading of ['주', 'Notes']) {
+      const footnotes = el('section', { dataFootnotes: true }, [el('ol', {}, [el('li', {}, [text('A source')])])]);
+      const tree = root([el('p', {}, [text('Body')]), el('h2', {}, [text(heading)]), footnotes]);
+      run(rehypeFootnotes, tree);
+
+      const headingIndex = tree.children.findIndex((node) => node.tagName === 'h2');
+      expect(tree.children[headingIndex - 1].properties.className).toContain('endnote-rule');
+      expect(tree.children[headingIndex + 1].properties.className).toContain('endnotes');
+      expect(tree.children.filter((node) => node.properties?.className?.includes('endnote-rule'))).toHaveLength(1);
+    }
+  });
+
   it('References 목록을 미주 블록으로 옮기고 원래 제목을 없앤다', () => {
     const tree = root([el('p', {}, [text('본문')]), ...referencesSection()]);
     run(rehypeFootnotes, tree);

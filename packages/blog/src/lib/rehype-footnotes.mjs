@@ -1,5 +1,6 @@
 const HEADING = /^(references?|참고\s*문헌|참고\s*자료)$/i;
 const HEADINGS = new Set(['h1', 'h2', 'h3', 'h4']);
+const NOTE_HEADINGS = new Set(['주', 'notes']);
 
 /**
  * 원문은 미주를 두 방식으로 적는다. 본문에 `<sup>N</sup>` 을 넣고 문서 끝에
@@ -12,7 +13,13 @@ export function rehypeFootnotes() {
     if (!refs.length) return;
 
     markReferences(tree, refs);
-    tree.children.push(rule(), endnotes(refs));
+    const noteHeadingIndex = tree.children.findIndex(
+      (node) =>
+        node.type === 'element' && HEADINGS.has(node.tagName) && NOTE_HEADINGS.has(text(node).trim().toLowerCase()),
+    );
+    if (noteHeadingIndex === -1) tree.children.push(rule());
+    else tree.children.splice(noteHeadingIndex, 0, rule());
+    tree.children.push(endnotes(refs));
   };
 }
 
