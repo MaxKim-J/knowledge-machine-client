@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { rehypeDatabaseAssets } from './rehype-database-assets.mjs';
 import { remarkDatabaseAssets } from './remark-database-assets.mjs';
 import { rehypeFootnotes } from './rehype-footnotes.mjs';
+import { rehypeTableScroll } from './rehype-table-scroll.mjs';
 
 const el = (tagName, properties = {}, children = []) => ({ type: 'element', tagName, properties, children });
 const text = (value) => ({ type: 'text', value });
@@ -67,6 +68,27 @@ describe('rehypeDatabaseAssets', () => {
     const tree = root([el('img', { src: 'images/foo/bar.png' })]);
     run(rehypeDatabaseAssets, tree, { data: {} });
     expect(tree.children[0].properties.src).toBe('images/foo/bar.png');
+  });
+});
+
+describe('rehypeTableScroll', () => {
+  it('각 표를 table-scroll 컨테이너로 감싼다', () => {
+    const table = el('table', {}, [el('tbody', {}, [el('tr', {}, [el('td', {}, [text('셀')])])])]);
+    const tree = root([el('p', {}, [text('앞 문장')]), table]);
+    run(rehypeTableScroll, tree);
+
+    const wrapper = tree.children[1];
+    expect(wrapper.tagName).toBe('div');
+    expect(wrapper.properties.className).toContain('table-scroll');
+    expect(wrapper.children[0]).toBe(table);
+  });
+
+  it('본문 안쪽에 있는 표도 감싼다', () => {
+    const table = el('table');
+    const tree = root([el('section', {}, [table])]);
+    run(rehypeTableScroll, tree);
+
+    expect(tree.children[0].children[0].properties.className).toContain('table-scroll');
   });
 });
 

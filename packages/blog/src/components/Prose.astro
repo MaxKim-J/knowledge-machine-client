@@ -128,7 +128,9 @@
   /* 표는 좁은 화면에서 본문 폭을 밀지 않고 스스로 가로 스크롤한다. */
   .prose .table-scroll {
     margin: 32px 0 30px;
+    max-width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .prose th {

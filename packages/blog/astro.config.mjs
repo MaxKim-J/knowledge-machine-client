@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { remarkDatabaseAssets } from './src/lib/remark-database-assets.mjs';
 import { rehypeDatabaseAssets } from './src/lib/rehype-database-assets.mjs';
 import { rehypeFootnotes } from './src/lib/rehype-footnotes.mjs';
+import { rehypeTableScroll } from './src/lib/rehype-table-scroll.mjs';
 
 export default defineConfig({
   // 배포 도메인. 정규 주소와 사이트맵, RSS, 공유 카드 이미지 주소가 모두 여기서 나온다.
@@ -15,7 +16,7 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkDatabaseAssets],
-      rehypePlugins: [rehypeDatabaseAssets, rehypeFootnotes],
+      rehypePlugins: [rehypeDatabaseAssets, rehypeTableScroll, rehypeFootnotes],
     }),
     shikiConfig: { theme: 'github-light', wrap: false },
   },
