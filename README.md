@@ -47,6 +47,15 @@ pnpm verify    # format:check + lint + typecheck + test
 | `/posts/{slug}`                           | 구 블로그 주소의 리다이렉트 |
 | `/rss.xml` · `/en/rss.xml`                | RSS 피드                    |
 
+## 검색 및 방문 통계
+
+- Search Console 속성은 `https://jonghyuk.kim/`이며, `sitemap-index.xml`을 제출합니다.
+- 소유권 확인을 유지하려면 `packages/blog/public/google8cec01efe6d209c6.html`을 보존해야 합니다.
+- GA4는 기존 속성 `386479043`과 웹 스트림 `5497054902`, 측정 ID `G-2H226PS56W`를 이어서 사용합니다.
+- `Base.astro`는 프로덕션 빌드의 `jonghyuk.kim`에서만 태그를 로드합니다. 개발 서버와 미리보기 도메인은 수집 대상에서 제외합니다.
+- 첫 화면과 Astro 화면 전환의 `astro:page-load`마다 조회수를 한 번 전송합니다. 목록 필터의 URL 변경은 조회수로 세지 않습니다.
+- 중복 집계를 막으려면 GA4 웹 스트림의 향상된 측정에서 페이지 조회의 고급 설정인 '브라우저 방문 기록 이벤트를 토대로 한 페이지 변경사항'을 꺼 두어야 합니다. 코드에서도 `send_page_view: false`를 유지합니다.
+
 ## 디자인
 
 화면은 Claude Design 프로젝트 `maxkim-j 블로그 리디자인` 의 `Knowledge Machine Blog.dc.html`

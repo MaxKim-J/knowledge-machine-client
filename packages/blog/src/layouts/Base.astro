@@ -82,6 +82,39 @@ const nav = [
     {/* 세리프 모드를 켤 때 Newsreader 와 Noto Serif KR 스타일시트를 여기에 다시 넣는다.
         비활성 상태에서는 한 글자도 렌더되지 않으면서 @font-face 선언만 635개 받는다. */}
     <ClientRouter />
+    <script>
+      if (import.meta.env.PROD && window.location.hostname === 'jonghyuk.kim') {
+        const measurementId = 'G-2H226PS56W';
+        const analytics = window as typeof window & {
+          dataLayer?: IArguments[];
+          gtag?: (...args: unknown[]) => void;
+        };
+        const dataLayer = (analytics.dataLayer ??= []);
+        analytics.gtag = function (..._args: unknown[]) {
+          // eslint-disable-next-line prefer-rest-params
+          dataLayer.push(arguments);
+        };
+        const gtag = analytics.gtag;
+        gtag('js', new Date());
+        gtag('config', measurementId, { send_page_view: false });
+
+        let pageReferrer = document.referrer;
+        document.addEventListener('astro:page-load', () => {
+          const pageLocation = window.location.href.split('#')[0];
+          gtag('event', 'page_view', {
+            page_location: pageLocation,
+            page_title: document.title,
+            page_referrer: pageReferrer,
+          });
+          pageReferrer = pageLocation;
+        });
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+        document.head.append(script);
+      }
+    </script>
   </head>
   <body>
     <div class="shell" data-serif="0">
