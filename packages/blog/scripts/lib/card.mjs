@@ -85,6 +85,7 @@ function layout({ label, title, summary, byline }) {
                 fontSize: summarySize(summary),
                 fontWeight: 700,
                 lineHeight: 1.4,
+                whiteSpace: 'pre-line',
                 letterSpacing: '-0.015em',
                 maxWidth: '94%',
                 color: '#2E2E2E',
