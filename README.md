@@ -29,5 +29,7 @@ pnpm verify   # 포맷·린트·타입 검사·테스트
 
 - Search Console에는 `sitemap-index.xml`을 제출하고, 소유권 확인 파일
   `packages/blog/public/google8cec01efe6d209c6.html`을 유지한다.
+- 빌드 시 발행된 페이지를 기준으로 이전 `/posts/` 주소와 Knowledge의 이전
+  `/articles/` 주소를 현재 URL로 연결하는 HTTP 301 규칙을 생성한다.
 - GA4 조회수는 코드에서 전송한다. 중복 집계를 막으려면 향상된 측정의
   '브라우저 방문 기록 이벤트를 토대로 한 페이지 변경사항'을 꺼 둔다.
