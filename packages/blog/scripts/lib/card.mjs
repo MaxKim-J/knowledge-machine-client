@@ -76,6 +76,7 @@ function layout({ label, title, summary, byline }) {
                 fontSize: titleSize(title, summary),
                 fontWeight: 800,
                 lineHeight: 1.24,
+                wordBreak: 'keep-all',
                 letterSpacing: '-0.035em',
                 maxWidth: '94%',
                 marginBottom: '52px',
